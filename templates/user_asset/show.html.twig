@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserAsset{% endblock %}
+
+{% block body %}
+    <h1>UserAsset</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_asset.id }}</td>
+            </tr>
+            <tr>
+                <th>Number</th>
+                <td>{{ user_asset.number }}</td>
+            </tr>
+            <tr>
+                <th>Data</th>
+                <td>{{ user_asset.data }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_asset_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_asset_edit', {'id': user_asset.id}) }}">edit</a>
+
+    {{ include('user_asset/_delete_form.html.twig') }}
+{% endblock %}
