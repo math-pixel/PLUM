@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Platform{% endblock %}
+
+{% block body %}
+    <h1>Edit Platform</h1>
+
+    {{ include('platform/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_platform_index') }}">back to list</a>
+
+    {{ include('platform/_delete_form.html.twig') }}
+{% endblock %}

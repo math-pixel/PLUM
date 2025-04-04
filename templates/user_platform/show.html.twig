@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserPlatform{% endblock %}
+
+{% block body %}
+    <h1>UserPlatform</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ user_platform.id }}</td>
+            </tr>
+            <tr>
+                <th>Api_key</th>
+                <td>{{ user_platform.apiKey }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_platform_index') }}">back to list</a>
+
+    <a href="{{ path('app_user_platform_edit', {'id': user_platform.id}) }}">edit</a>
+
+    {{ include('user_platform/_delete_form.html.twig') }}
+{% endblock %}
