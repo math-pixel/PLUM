@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\PlatformRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlatformRepository::class)]
@@ -18,7 +21,18 @@ class Platform
 
     #[ORM\Column(length: 255)]
     private ?string $endPoint = null;
+    #[ORM\OneToMany(targetEntity: UserPlatform::class, mappedBy: 'plateform')]
+    private Collection $users;
 
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
+
+    public function getPlateformUsers(): Collection
+    {
+        return $this->users;
+    }
     public function getId(): ?int
     {
         return $this->id;
