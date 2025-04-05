@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-
-final class HomeController extends AbstractController
+#[Route('/register')]
+final class RegisterController extends AbstractController
 {
-    #[Route(name: '/', methods: ['GET'])]
+    #[Route(name: '', methods: ['GET'])]
     public function index(): Response
     {
-        return $this->render('home/index.html.twig', [
+        return $this->render('register/index.html.twig', [
 
         ]);
     }
