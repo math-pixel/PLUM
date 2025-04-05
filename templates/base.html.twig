@@ -1,17 +1,70 @@
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#    <head>#}
+{#        <meta charset="UTF-8">#}
+{#        <title>{% block title %}Welcome!{% endblock %}</title>#}
+{#        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">#}
+{#        {% block stylesheets %}#}
+{#        {% endblock %}#}
+
+{#        {% block javascripts %}#}
+{#            {% block importmap %}{{ importmap('app') }}{% endblock %}#}
+{#        {% endblock %}#}
+{#    </head>#}
+{#    <body>#}
+{#        {% block body %}{% endblock %}#}
+{#    </body>#}
+{#</html>#}
+
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Investment Portfolio{% endblock %}</title>
+    {% block stylesheets %}
+    {% endblock %}
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <a href="/" class="logo">InvestFolio</a>
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    <li><a href="/portfolio" class="nav-link">Portfolio</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a href="/login" class="btn btn-outline">Login</a>
+                <a href="/register" class="btn btn-primary">Register</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main>
+    {% block body %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <p>&copy; {{ "now"|date("Y") }} InvestFolio. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+</script>
+</body>
 </html>
+
+
