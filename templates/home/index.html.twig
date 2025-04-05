@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InvestFolio - Smart Investment Portfolio{% endblock %}
+
+{% block body %}
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Manage Your Investments with Confidence</h1>
+                <p class="hero-description">Track, analyze, and optimize your investment portfolio with our intuitive bento-style dashboard.</p>
+                <div class="hero-buttons">
+                    <a href="/register" class="btn btn-primary btn-lg">Get Started</a>
+                    <a href="#features" class="btn btn-outline btn-lg">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose InvestFolio</h2>
+
+            <div class="bento-grid">
+                <!-- Main feature - spans 2 columns -->
+                <div class="bento-item bento-large purple-gradient">
+                    <div class="bento-icon-wrapper purple">
+                        <i data-lucide="pie-chart"></i>
+                    </div>
+                    <h3 class="bento-title">Portfolio Visualization</h3>
+                    <p class="bento-description">Get a clear visual representation of your investment allocation across different assets and sectors.</p>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Secondary feature -->
+                <div class="bento-item blue-gradient">
+                    <div class="bento-icon-wrapper blue">
+                        <i data-lucide="trending-up"></i>
+                    </div>
+                    <h3 class="bento-title">Performance Tracking</h3>
+                    <p class="bento-description">Monitor the performance of your investments in real-time with detailed analytics.</p>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bento-item amber-gradient">
+                    <div class="bento-icon-wrapper amber">
+                        <i data-lucide="bell"></i>
+                    </div>
+                    <h3 class="bento-title">Smart Alerts</h3>
+                    <p class="bento-description">Receive timely notifications about significant market movements affecting your portfolio.</p>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bento-item emerald-gradient">
+                    <div class="bento-icon-wrapper emerald">
+                        <i data-lucide="shield"></i>
+                    </div>
+                    <h3 class="bento-title">Risk Assessment</h3>
+                    <p class="bento-description">Understand your portfolio's risk profile with our advanced risk assessment tools.</p>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Feature 5 - spans 2 columns -->
+                <div class="bento-item bento-large rose-gradient">
+                    <div class="bento-icon-wrapper rose">
+                        <i data-lucide="lightbulb"></i>
+                    </div>
+                    <h3 class="bento-title">Investment Recommendations</h3>
+                    <p class="bento-description">Get personalized investment recommendations based on your goals, risk tolerance, and market conditions.</p>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to optimize your investment strategy?</h2>
+                <p class="cta-description">Join thousands of investors who are already using InvestFolio to make smarter investment decisions.</p>
+                <a href="/register" class="btn btn-primary btn-lg">Create Your Portfolio</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

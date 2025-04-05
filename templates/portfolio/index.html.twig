@@ -33,3 +33,217 @@
 
     <a href="{{ path('app_portfolio_new') }}">Create new</a>
 {% endblock %}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}My Portfolio - InvestFolio{% endblock %}
+
+{% block body %}
+    <section class="portfolio-section">
+        <div class="container">
+            <div class="portfolio-header">
+                <h1 class="portfolio-title">My Investment Portfolio</h1>
+                <div class="portfolio-actions">
+                    <button class="btn btn-outline btn-icon">
+                        <i data-lucide="filter"></i> Filter
+                    </button>
+                    <button class="btn btn-primary btn-icon">
+                        <i data-lucide="plus"></i> Add Investment
+                    </button>
+                </div>
+            </div>
+
+            <div class="portfolio-summary">
+                <div class="summary-item purple-gradient">
+                    <h3 class="summary-title">Total Value</h3>
+                    <p class="summary-value">$124,500.00</p>
+                    <p class="summary-change positive">+2.4% <i data-lucide="trending-up"></i></p>
+                </div>
+                <div class="summary-item blue-gradient">
+                    <h3 class="summary-title">Monthly Return</h3>
+                    <p class="summary-value">$1,245.00</p>
+                    <p class="summary-change positive">+1.8% <i data-lucide="trending-up"></i></p>
+                </div>
+                <div class="summary-item amber-gradient">
+                    <h3 class="summary-title">Annual Return</h3>
+                    <p class="summary-value">$12,450.00</p>
+                    <p class="summary-change positive">+10.5% <i data-lucide="trending-up"></i></p>
+                </div>
+            </div>
+
+            <div class="bento-grid">
+                <!-- Stocks -->
+                <div class="bento-item bento-large purple-gradient">
+                    <div class="bento-icon-wrapper purple">
+                        <i data-lucide="bar-chart-2"></i>
+                    </div>
+                    <h3 class="bento-title">Stocks</h3>
+                    <p class="bento-description">Your stock investments across different sectors and markets.</p>
+                    <div class="bento-content">
+                        <div class="investment-list">
+                            <div class="investment-item">
+                                <div class="investment-info">
+                                    <h4>AAPL</h4>
+                                    <p>Apple Inc.</p>
+                                </div>
+                                <div class="investment-value">
+                                    <p class="value">$25,000</p>
+                                    <p class="change positive">+3.2%</p>
+                                </div>
+                            </div>
+                            <div class="investment-item">
+                                <div class="investment-info">
+                                    <h4>MSFT</h4>
+                                    <p>Microsoft Corp.</p>
+                                </div>
+                                <div class="investment-value">
+                                    <p class="value">$18,500</p>
+                                    <p class="change positive">+1.8%</p>
+                                </div>
+                            </div>
+                            <div class="investment-item">
+                                <div class="investment-info">
+                                    <h4>AMZN</h4>
+                                    <p>Amazon.com Inc.</p>
+                                </div>
+                                <div class="investment-value">
+                                    <p class="value">$15,000</p>
+                                    <p class="change negative">-0.5%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- ETFs -->
+                <div class="bento-item blue-gradient">
+                    <div class="bento-icon-wrapper blue">
+                        <i data-lucide="layers"></i>
+                    </div>
+                    <h3 class="bento-title">ETFs</h3>
+                    <p class="bento-description">Your exchange-traded fund investments.</p>
+                    <div class="bento-content">
+                        <div class="investment-list">
+                            <div class="investment-item">
+                                <div class="investment-info">
+                                    <h4>VOO</h4>
+                                    <p>Vanguard S&P 500</p>
+                                </div>
+                                <div class="investment-value">
+                                    <p class="value">$20,000</p>
+                                    <p class="change positive">+2.1%</p>
+                                </div>
+                            </div>
+                            <div class="investment-item">
+                                <div class="investment-info">
+                                    <h4>QQQ</h4>
+                                    <p>Invesco NASDAQ 100</p>
+                                </div>
+                                <div class="investment-value">
+                                    <p class="value">$15,000</p>
+                                    <p class="change positive">+2.5%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Bonds -->
+                <div class="bento-item amber-gradient">
+                    <div class="bento-icon-wrapper amber">
+                        <i data-lucide="landmark"></i>
+                    </div>
+                    <h3 class="bento-title">Bonds</h3>
+                    <p class="bento-description">Your bond investments and fixed income securities.</p>
+                    <div class="bento-content">
+                        <div class="investment-list">
+                            <div class="investment-item">
+                                <div class="investment-info">
+                                    <h4>BND</h4>
+                                    <p>Vanguard Total Bond</p>
+                                </div>
+                                <div class="investment-value">
+                                    <p class="value">$10,000</p>
+                                    <p class="change positive">+0.5%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Real Estate -->
+                <div class="bento-item emerald-gradient">
+                    <div class="bento-icon-wrapper emerald">
+                        <i data-lucide="home"></i>
+                    </div>
+                    <h3 class="bento-title">Real Estate</h3>
+                    <p class="bento-description">Your real estate investment trusts (REITs).</p>
+                    <div class="bento-content">
+                        <div class="investment-list">
+                            <div class="investment-item">
+                                <div class="investment-info">
+                                    <h4>VNQ</h4>
+                                    <p>Vanguard Real Estate</p>
+                                </div>
+                                <div class="investment-value">
+                                    <p class="value">$12,000</p>
+                                    <p class="change positive">+1.2%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+
+                <!-- Crypto -->
+                <div class="bento-item bento-large rose-gradient">
+                    <div class="bento-icon-wrapper rose">
+                        <i data-lucide="bitcoin"></i>
+                    </div>
+                    <h3 class="bento-title">Cryptocurrency</h3>
+                    <p class="bento-description">Your cryptocurrency investments.</p>
+                    <div class="bento-content">
+                        <div class="investment-list">
+                            <div class="investment-item">
+                                <div class="investment-info">
+                                    <h4>BTC</h4>
+                                    <p>Bitcoin</p>
+                                </div>
+                                <div class="investment-value">
+                                    <p class="value">$5,000</p>
+                                    <p class="change positive">+4.5%</p>
+                                </div>
+                            </div>
+                            <div class="investment-item">
+                                <div class="investment-info">
+                                    <h4>ETH</h4>
+                                    <p>Ethereum</p>
+                                </div>
+                                <div class="investment-value">
+                                    <p class="value">$4,000</p>
+                                    <p class="change negative">-1.2%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bento-arrow">
+                        <i data-lucide="arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+
