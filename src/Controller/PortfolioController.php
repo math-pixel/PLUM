@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/portfolio')]
 final class PortfolioController extends AbstractController
 {
-    #[Route(name: 'app_portfolio_index', methods: ['GET'])]
+    #[Route('/', name: 'app_portfolio_index', methods: ['GET'])]
     public function index(PortfolioRepository $portfolioRepository): Response
     {
         return $this->render('portfolio/index.html.twig', [
