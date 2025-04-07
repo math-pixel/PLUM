@@ -1,49 +1,251 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Login - InvestFolio{% endblock %}
+{% block title %}Edit Profile - InvestFolio{% endblock %}
 
 {% block body %}
-    <section class="auth-section">
+    <section class="profile-section">
         <div class="container">
-            <div class="auth-container">
-                <div class="auth-form-container purple-gradient">
-                    <h1 class="auth-title">Welcome Back</h1>
-                    <p class="auth-description">Log in to access your investment portfolio</p>
+            <div class="profile-header">
+                <h1 class="profile-title">Edit Profile</h1>
+                <a href="/profile" class="btn btn-outline btn-icon">
+                    <i data-lucide="arrow-left"></i> Back to Profile
+                </a>
+            </div>
 
-                    <form class="auth-form" action="/login" method="post">
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required class="form-control">
+            <div class="profile-edit-container">
+                <div class="bento-grid">
+                    <!-- Personal Information -->
+                    <div class="bento-item purple-gradient">
+                        <div class="bento-icon-wrapper purple">
+                            <i data-lucide="user"></i>
                         </div>
+                        <h3 class="bento-title">Personal Information</h3>
+                        <p class="bento-description">Update your personal details</p>
 
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" required class="form-control">
-                        </div>
+                        <!-- Alert Success Message (Uncomment when needed) -->
+                        <!-- <div class="alert alert-success">
+                            Your profile has been updated successfully.
+                        </div> -->
 
-                        <div class="form-group form-checkbox">
-                            <input type="checkbox" id="remember_me" name="remember_me" class="form-checkbox-input">
-                            <label for="remember_me" class="form-checkbox-label">Remember me</label>
-                            <a href="/forgot-password" class="forgot-password">Forgot password?</a>
-                        </div>
+                        <form class="profile-form" method="post" action="/profile/update">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" name="firstName" class="form-control" value="John">
+                            </div>
 
-                        <button type="submit" class="btn btn-primary btn-block">Login</button>
-                    </form>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" name="lastName" class="form-control" value="Doe">
+                            </div>
 
-                    <div class="auth-footer">
-                        <p>Don't have an account? <a href="/register" class="auth-link">Register</a></p>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" class="form-control" value="john.doe@example.com">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" name="phone" class="form-control" value="+1 (555) 123-4567">
+                            </div>
+
+                            <div class="form-button-wrapper">
+                                <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+                            </div>
+                        </form>
                     </div>
-                </div>
 
-                <div class="auth-image-container blue-gradient">
-                    <div class="auth-image-content">
-                        <i data-lucide="trending-up" class="auth-image-icon"></i>
-                        <h2 class="auth-image-title">Track Your Investments</h2>
-                        <p class="auth-image-description">Get insights into your portfolio performance and make informed decisions.</p>
+                    <!-- Profile Picture -->
+                    <div class="bento-item blue-gradient">
+                        <div class="bento-icon-wrapper blue">
+                            <i data-lucide="image"></i>
+                        </div>
+                        <h3 class="bento-title">Profile Picture</h3>
+                        <p class="bento-description">Update your profile image</p>
+
+                        <div class="profile-picture-container">
+                            <div class="current-picture">
+                                <!-- If user has profile picture -->
+                                <!-- <img src="/uploads/profile/user-profile.jpg" alt="Profile Picture" class="profile-image"> -->
+
+                                <!-- If user doesn't have profile picture -->
+                                <div class="profile-placeholder">
+                                    <i data-lucide="user" class="profile-placeholder-icon"></i>
+                                </div>
+                            </div>
+
+                            <form class="picture-form" method="post" action="/profile/picture" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <input type="file" id="imageFile" name="imageFile" class="form-control-file" accept="image/*">
+                                </div>
+
+                                <div class="form-button-wrapper">
+                                    <button type="submit" class="btn btn-primary btn-block">Upload Picture</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Change Password -->
+                    <div class="bento-item amber-gradient">
+                        <div class="bento-icon-wrapper amber">
+                            <i data-lucide="lock"></i>
+                        </div>
+                        <h3 class="bento-title">Change Password</h3>
+                        <p class="bento-description">Update your account password</p>
+
+                        <!-- Alert Success Message (Uncomment when needed) -->
+                        <!-- <div class="alert alert-success">
+                            Your password has been updated successfully.
+                        </div> -->
+
+                        <form class="password-form" method="post" action="/profile/password">
+                            <div class="form-group">
+                                <label for="currentPassword">Current Password</label>
+                                <input type="password" id="currentPassword" name="currentPassword" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" id="newPassword" name="newPassword" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm New Password</label>
+                                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control">
+                            </div>
+
+                            <div class="form-button-wrapper">
+                                <button type="submit" class="btn btn-primary btn-block">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Investment Preferences -->
+                    <div class="bento-item emerald-gradient">
+                        <div class="bento-icon-wrapper emerald">
+                            <i data-lucide="settings"></i>
+                        </div>
+                        <h3 class="bento-title">Investment Preferences</h3>
+                        <p class="bento-description">Customize your investment settings</p>
+
+                        <form class="preferences-form" method="post" action="/profile/preferences">
+                            <div class="form-group">
+                                <label for="riskTolerance">Risk Tolerance</label>
+                                <select id="riskTolerance" name="riskTolerance" class="form-control">
+                                    <option value="conservative">Conservative</option>
+                                    <option value="moderate" selected>Moderate</option>
+                                    <option value="aggressive">Aggressive</option>
+                                    <option value="very_aggressive">Very Aggressive</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="investmentGoal">Investment Goal</label>
+                                <select id="investmentGoal" name="investmentGoal" class="form-control">
+                                    <option value="retirement">Retirement</option>
+                                    <option value="wealth_building" selected>Wealth Building</option>
+                                    <option value="education">Education</option>
+                                    <option value="home_purchase">Home Purchase</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="timeHorizon">Time Horizon</label>
+                                <select id="timeHorizon" name="timeHorizon" class="form-control">
+                                    <option value="short_term">Short Term (< 3 years)</option>
+                                    <option value="medium_term" selected>Medium Term (3-7 years)</option>
+                                    <option value="long_term">Long Term (7+ years)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group form-checkbox">
+                                <input type="checkbox" id="enableNotifications" name="enableNotifications" class="form-checkbox-input" checked>
+                                <label for="enableNotifications" class="form-checkbox-label">
+                                    Enable email notifications
+                                </label>
+                            </div>
+
+                            <div class="form-button-wrapper">
+                                <button type="submit" class="btn btn-primary btn-block">Save Preferences</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Danger Zone -->
+                    <div class="bento-item rose-gradient">
+                        <div class="bento-icon-wrapper rose">
+                            <i data-lucide="alert-triangle"></i>
+                        </div>
+                        <h3 class="bento-title">Account Settings</h3>
+                        <p class="bento-description">Manage your account</p>
+
+                        <div class="danger-zone">
+                            <h4 class="danger-title">Danger Zone</h4>
+                            <p class="danger-description">These actions are irreversible. Please proceed with caution.</p>
+
+                            <div class="form-button-wrapper">
+                                <button type="button" class="btn btn-outline btn-danger" id="deleteAccountBtn">
+                                    Delete Account
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Custom Delete Account Modal -->
+    <div class="custom-modal" id="deleteAccountModal">
+        <div class="custom-modal-overlay"></div>
+        <div class="custom-modal-container">
+            <div class="custom-modal-header">
+                <h5 class="custom-modal-title">Delete Account</h5>
+                <button type="button" class="custom-modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="custom-modal-body">
+                <p>Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed.</p>
+
+                <form action="/profile/delete" method="post" id="deleteAccountForm">
+                    <div class="form-group">
+                        <label for="confirmPassword">Enter your password to confirm</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="csrf-token-placeholder">
+                </form>
+            </div>
+            <div class="custom-modal-footer">
+                <button type="button" class="btn btn-outline" id="cancelDeleteBtn">Cancel</button>
+                <button type="submit" form="deleteAccountForm" class="btn btn-danger">Delete Account</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+            const deleteAccountModal = document.getElementById('deleteAccountModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+            const modalOverlay = document.querySelector('.custom-modal-overlay');
+
+            // Open modal
+            deleteAccountBtn.addEventListener('click', function() {
+                deleteAccountModal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            });
+
+            // Close modal functions
+            const closeModal = function() {
+                deleteAccountModal.classList.remove('show');
+                document.body.style.overflow = ''; // Re-enable scrolling
+            };
+
+            closeModalBtn.addEventListener('click', closeModal);
+            cancelDeleteBtn.addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', closeModal);
+        });
+    </script>
 {% endblock %}
 

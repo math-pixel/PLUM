@@ -1,40 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{#{% block title %}Portfolio index{% endblock %}#}
-
-{#{% block body %}#}
-{#    <h1>Portfolio index</h1>#}
-
-{#    <table class="table">#}
-{#        <thead>#}
-{#            <tr>#}
-{#                <th>Id</th>#}
-{#                <th>Name</th>#}
-{#                <th>actions</th>#}
-{#            </tr>#}
-{#        </thead>#}
-{#        <tbody>#}
-{#        {% for portfolio in portfolios %}#}
-{#            <tr>#}
-{#                <td>{{ portfolio.id }}</td>#}
-{#                <td>{{ portfolio.name }}</td>#}
-{#                <td>#}
-{#                    <a href="{{ path('app_portfolio_show', {'id': portfolio.id}) }}">show</a>#}
-{#                    <a href="{{ path('app_portfolio_edit', {'id': portfolio.id}) }}">edit</a>#}
-{#                </td>#}
-{#            </tr>#}
-{#        {% else %}#}
-{#            <tr>#}
-{#                <td colspan="3">no records found</td>#}
-{#            </tr>#}
-{#        {% endfor %}#}
-{#        </tbody>#}
-{#    </table>#}
-
-{#    <a href="{{ path('app_portfolio_new') }}">Create new</a>#}
-{#{% endblock %}#}
-
 {% block title %}My Portfolio - InvestFolio{% endblock %}
+
+{% set page_css = ['portfolio'] %}
 
 {% block body %}
     <section class="portfolio-section">
@@ -243,5 +211,4 @@
         </div>
     </section>
 {% endblock %}
-
 
