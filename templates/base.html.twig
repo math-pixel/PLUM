@@ -26,10 +26,14 @@
                     <li><a href="/portfolio" class="nav-link">Portfolio</a></li>
                 </ul>
             </nav>
-            <div class="auth-buttons">
-                <a href="/login" class="btn btn-outline">Login</a>
-                <a href="/register" class="btn btn-primary">Register</a>
-            </div>
+            {% if app.user %}
+                <p>Bonjour {{ app.user.username }} !</p>
+            {% else %}
+                <div class="auth-buttons">
+                    <a href="/login" class="btn btn-outline">Login</a>
+                    <a href="/register" class="btn btn-primary">Register</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 </header>
