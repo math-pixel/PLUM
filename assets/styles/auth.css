@@ -1,0 +1,92 @@
+/* Auth Pages */
+.auth-section {
+    padding: 4rem 0;
+    min-height: calc(100vh - 140px);
+    display: flex;
+    align-items: center;
+}
+
+.auth-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+@media (min-width: 768px) {
+    .auth-container {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.auth-form-container {
+    padding: 2.5rem;
+}
+
+.auth-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.auth-description {
+    color: var(--gray-600);
+    margin-bottom: 2rem;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.forgot-password {
+    margin-left: auto;
+    font-size: 0.875rem;
+    text-decoration: underline;
+}
+
+.auth-footer {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.auth-link {
+    color: var(--purple-700);
+    font-weight: 500;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+.auth-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+}
+
+.auth-image-content {
+    text-align: center;
+    max-width: 300px;
+}
+
+.auth-image-icon {
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-image-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.auth-image-description {
+    color: var(--gray-700);
+}
+
