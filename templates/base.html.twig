@@ -27,7 +27,10 @@
                 </ul>
             </nav>
             {% if app.user %}
-                <p>Bonjour {{ app.user.username }} !</p>
+                <div class="auth-buttons">
+                    <p>Bonjour {{ app.user.email }} !</p>
+                    <a href="/logout" class="btn btn-primary">logout</a>
+                </div>
             {% else %}
                 <div class="auth-buttons">
                     <a href="/login" class="btn btn-outline">Login</a>

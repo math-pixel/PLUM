@@ -24,7 +24,7 @@ class SecurityController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/account', name: 'app_login')]
+    #[Route(path: '/account', name: 'app_account')]
     public function account(AuthenticationUtils $authenticationUtils): Response
     {
         // get the login error if there is one
