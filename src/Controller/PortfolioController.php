@@ -12,6 +12,7 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/portfolio')]
 final class PortfolioController extends AbstractController
@@ -21,7 +22,6 @@ final class PortfolioController extends AbstractController
     {
         // Récupération de l'utilisateur connecté
         $user = $security->getUser();
-
         if (!$user) {
             throw $this->createAccessDeniedException('Vous devez être connecté pour consulter vos portfolios.');
         }
@@ -74,6 +74,7 @@ final class PortfolioController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_portfolio_show', methods: ['GET'])]
+    #[IsGranted('view', 'portfolio')]
     public function show(Portfolio $portfolio): Response
     {
         $this->denyAccessUnlessGranted(PortfolioVoter::VIEW, $portfolio);
@@ -84,6 +85,7 @@ final class PortfolioController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_portfolio_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('edit', 'portfolio')]
     public function edit(Request $request, Portfolio $portfolio, EntityManagerInterface $entityManager): Response
     {
         $this->denyAccessUnlessGranted(PortfolioVoter::EDIT, $portfolio);
@@ -103,16 +105,13 @@ final class PortfolioController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_portfolio_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_portfolio_delete', methods: ['POST'])]
+    #[IsGranted('delete', 'portfolio')]
     public function delete(Request $request, Portfolio $portfolio, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted(PortfolioVoter::DELETE, $portfolio);
+        $entityManager->remove($portfolio);
+        $entityManager->flush();
 
-        if ($this->isCsrfTokenValid('delete'.$portfolio->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($portfolio);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_portfolio_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_portfolio_index');
     }
 }

@@ -2,22 +2,32 @@
 
 namespace App\Security\Voter;
 
+use App\Entity\Portfolio;
+use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 final class PortfolioVoter extends Voter
 {
-    public const EDIT = 'POST_EDIT';
-    public const VIEW = 'POST_VIEW';
-    public const DELETE = 'POST_DELETE';
+    public const EDIT = 'edit';
+    public const VIEW = 'view';
+    public const DELETE = 'delete';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
-        return in_array($attribute, [self::EDIT, self::VIEW])
-            && $subject instanceof \App\Entity\Portfolio;
+        if (!in_array($attribute, [self::VIEW, self::EDIT, self::DELETE])) {
+            return false;
+        }
+
+        // only vote on `Post` objects
+        if (!$subject instanceof Portfolio) {
+            return false;
+        }
+
+        return true;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -31,23 +41,33 @@ final class PortfolioVoter extends Voter
 
         $portfolio = $subject;
         // ... (check conditions and return true to grant permission) ...
-        switch ($attribute) {
-            case self::EDIT:
-                // logic to determine if the user can EDIT
-                // return true or false
-                return $portfolio->getUser()===$user;
+       return  match ($attribute) {
+           self::VIEW => $this->canView($portfolio, $user),
+           self::EDIT => $this->canEdit($portfolio, $user),
+           self::DELETE => $this->canDelete($portfolio, $user),
+           default => throw new \LogicException('This code should not be reached!')
+        };
+    }
 
-            case self::VIEW:
-                // logic to determine if the user can VIEW
-                // return true or false
-                return $portfolio->getUser()===$user;
+    private function canView(Portfolio $portfolio, User $user): bool
+    {
+        // if they can edit, they can view
+        if ($this->canEdit($portfolio, $user)) {
+            return true;
+        };
+        return false;
+    }
 
-            case self::DELETE:
+    private function canEdit(Portfolio $portfolio, User $user): bool
+    {
+        return $user === $portfolio->getUser();
+    }
 
-                return $portfolio->getUser()===$user;
-
+    private function canDelete(Portfolio $portfolio, User $user): bool
+    {
+        if ($this->canEdit($portfolio, $user)) {
+            return true;
         }
-
         return false;
     }
 }
