@@ -6,6 +6,7 @@ use App\Repository\PortfolioRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: PortfolioRepository::class)]
 class Portfolio
@@ -24,16 +25,20 @@ class Portfolio
     #[ORM\ManyToMany(targetEntity: Asset::class)]
     private Collection $assets;
 
-    /**
-     * @var Collection<int, self>
-     */
-    #[ORM\ManyToMany(targetEntity: self::class)]
-    private Collection $portfolio;
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
+    private ?self $parent = null;
+
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    private Collection $children;
+
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'portfolios')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
     public function __construct()
     {
         $this->assets = new ArrayCollection();
-        $this->portfolio = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -77,26 +82,55 @@ class Portfolio
         return $this;
     }
 
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): static
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, self>
      */
-    public function getPortfolio(): Collection
+    public function getChildren(): Collection
     {
-        return $this->portfolio;
+        return $this->children;
     }
 
-    public function addPortfolio(self $portfolio): static
+    public function addChild(self $child): static
     {
-        if (!$this->portfolio->contains($portfolio)) {
-            $this->portfolio->add($portfolio);
+        if (!$this->children->contains($child)) {
+            $this->children->add($child);
+            $child->setParent($this);
         }
 
         return $this;
     }
 
-    public function removePortfolio(self $portfolio): static
+    public function removeChild(self $child): static
     {
-        $this->portfolio->removeElement($portfolio);
+        if ($this->children->removeElement($child)) {
+            if ($child->getParent() === $this) {
+                $child->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

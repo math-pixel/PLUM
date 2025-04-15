@@ -1,0 +1,11 @@
+{% if children|length > 0 %}
+    <div class="summary-item purple-gradient">
+
+    {% for child in children %}
+        <div class="summary-title"><strong>{{ child.name }}</strong></div>
+                <a href="{{ path('app_portfolio_new', {'parentId': child.id}) }}">Create Sub-Portfolio</a>
+                {# Appel récursif pour afficher les sous-portfolios #}
+                {% include 'portfolio/_portfolio_tree.html.twig' with { 'children': child.children } %}
+        {% endfor %}
+    </div>
+{% endif %}
