@@ -14,13 +14,13 @@ class UserPlatform
     #[ORM\Column(type:"integer")]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userPlateforms')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'userPlatforms')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(targetEntity: Platform::class, inversedBy: 'userPlateforms')]
+    #[ORM\ManyToOne(targetEntity: Platform::class, inversedBy: 'userPlatforms')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Plateform $plateform = null;
+    private ?Platform $platform = null;
 
     #[ORM\Column(type:"string", length:255)]
     private string $apiKey;
@@ -40,14 +40,14 @@ class UserPlatform
         return $this;
     }
 
-    public function getPlateform(): ?Platform
+    public function getPlatform(): ?Platform
     {
-        return $this->plateform;
+        return $this->platform;
     }
 
-    public function setPlateform(?Plateform $plateform): self
+    public function setPlatform(?Platform $platform): self
     {
-        $this->plateform = $plateform;
+        $this->platform = $platform;
         return $this;
     }
 

@@ -15,16 +15,16 @@ class PortfolioType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('assets', EntityType::class, [
-                'class' => Asset::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
-            ->add('portfolio', EntityType::class, [
-                'class' => Portfolio::class,
-                'choice_label' => 'id',
-                'multiple' => true,
-            ])
+//            ->add('assets', EntityType::class, [
+//                'class' => Asset::class,
+//                'choice_label' => 'id',
+//                'multiple' => true,
+//            ])
+//            ->add('parent', EntityType::class, [
+//                'class' => Portfolio::class,
+//                'choice_label' => 'name', // ou un autre attribut pertinent
+//                'required' => false,      // car il peut être facultatif
+//            ])
         ;
     }
 

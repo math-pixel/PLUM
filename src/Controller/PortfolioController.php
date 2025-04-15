@@ -7,6 +7,7 @@ use App\Form\PortfolioType;
 use App\Repository\PortfolioRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,22 +24,41 @@ final class PortfolioController extends AbstractController
     }
 
     #[Route('/new', name: 'app_portfolio_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
+        // Récupération de l'utilisateur connecté
+        $user = $security->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour créer un portfolio.');
+        }
+
         $portfolio = new Portfolio();
+
+        // Vérifier si un portfolio parent est spécifié dans l'URL via le paramètre "parentId"
+        $parentId = $request->query->get('parentId');
+        if ($parentId) {
+            $parentPortfolio = $entityManager->getRepository(Portfolio::class)->find($parentId);
+            if ($parentPortfolio) {
+                $portfolio->setParent($parentPortfolio);
+            }
+        }
+
         $form = $this->createForm(PortfolioType::class, $portfolio);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // On associe le portfolio à l'utilisateur connecté
+            $portfolio->setUser($user);
+
             $entityManager->persist($portfolio);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_portfolio_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_portfolio_index');
         }
 
         return $this->render('portfolio/new.html.twig', [
             'portfolio' => $portfolio,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

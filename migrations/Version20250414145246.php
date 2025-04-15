@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250405144736 extends AbstractMigration
+final class Version20250414145246 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -27,7 +27,13 @@ final class Version20250405144736 extends AbstractMigration
             CREATE TABLE platform (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL, end_point VARCHAR(255) NOT NULL)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE portfolio (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(255) NOT NULL)
+            CREATE TABLE portfolio (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, parent_id INTEGER DEFAULT NULL, user_id INTEGER NOT NULL, name VARCHAR(255) NOT NULL, CONSTRAINT FK_A9ED1062727ACA70 FOREIGN KEY (parent_id) REFERENCES portfolio (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_A9ED1062A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_A9ED1062727ACA70 ON portfolio (parent_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_A9ED1062A76ED395 ON portfolio (user_id)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE portfolio_asset (portfolio_id INTEGER NOT NULL, asset_id INTEGER NOT NULL, PRIMARY KEY(portfolio_id, asset_id), CONSTRAINT FK_5FF77019B96B5643 FOREIGN KEY (portfolio_id) REFERENCES portfolio (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_5FF770195DA1941 FOREIGN KEY (asset_id) REFERENCES asset (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
@@ -39,19 +45,29 @@ final class Version20250405144736 extends AbstractMigration
             CREATE INDEX IDX_5FF770195DA1941 ON portfolio_asset (asset_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE portfolio_portfolio (portfolio_source INTEGER NOT NULL, portfolio_target INTEGER NOT NULL, PRIMARY KEY(portfolio_source, portfolio_target), CONSTRAINT FK_5745814E59619246 FOREIGN KEY (portfolio_source) REFERENCES portfolio (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_5745814E4084C2C9 FOREIGN KEY (portfolio_target) REFERENCES portfolio (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)
+            CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, email VARCHAR(180) NOT NULL, roles CLOB NOT NULL --(DC2Type:json)
+            , password VARCHAR(255) NOT NULL)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX IDX_5745814E59619246 ON portfolio_portfolio (portfolio_source)
+            CREATE UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL ON user (email)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE INDEX IDX_5745814E4084C2C9 ON portfolio_portfolio (portfolio_target)
+            CREATE TABLE user_asset (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, asset_id INTEGER NOT NULL, number INTEGER NOT NULL, data VARCHAR(255) NOT NULL, CONSTRAINT FK_E06DA104A76ED395 FOREIGN KEY (user_id) REFERENCES user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_E06DA1045DA1941 FOREIGN KEY (asset_id) REFERENCES asset (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE user_asset (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, number INTEGER NOT NULL, data VARCHAR(255) NOT NULL)
+            CREATE INDEX IDX_E06DA104A76ED395 ON user_asset (user_id)
         SQL);
         $this->addSql(<<<'SQL'
-            CREATE TABLE user_platform (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, api_key VARCHAR(255) NOT NULL)
+            CREATE INDEX IDX_E06DA1045DA1941 ON user_asset (asset_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE TABLE user_platform (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, plateform_id INTEGER NOT NULL, api_key VARCHAR(255) NOT NULL, CONSTRAINT FK_D9DF34CBA76ED395 FOREIGN KEY (user_id) REFERENCES user (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_D9DF34CBCCAA542F FOREIGN KEY (plateform_id) REFERENCES platform (id) NOT DEFERRABLE INITIALLY IMMEDIATE)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_D9DF34CBA76ED395 ON user_platform (user_id)
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX IDX_D9DF34CBCCAA542F ON user_platform (plateform_id)
         SQL);
         $this->addSql(<<<'SQL'
             CREATE TABLE messenger_messages (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, body CLOB NOT NULL, headers CLOB NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME NOT NULL --(DC2Type:datetime_immutable)
@@ -86,7 +102,7 @@ final class Version20250405144736 extends AbstractMigration
             DROP TABLE portfolio_asset
         SQL);
         $this->addSql(<<<'SQL'
-            DROP TABLE portfolio_portfolio
+            DROP TABLE user
         SQL);
         $this->addSql(<<<'SQL'
             DROP TABLE user_asset
