@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Portfolio;
 use App\Form\PortfolioType;
 use App\Repository\PortfolioRepository;
+use App\Security\Voter\PortfolioVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -16,10 +17,20 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PortfolioController extends AbstractController
 {
     #[Route('/', name: 'app_portfolio_index', methods: ['GET'])]
-    public function index(PortfolioRepository $portfolioRepository): Response
+    public function index(PortfolioRepository $portfolioRepository, Security $security): Response
     {
+        // Récupération de l'utilisateur connecté
+        $user = $security->getUser();
+
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour consulter vos portfolios.');
+        }
+
+        // Récupérer uniquement les portfolios appartenant à l'utilisateur
+        $portfolios = $portfolioRepository->findBy(['user' => $user]);
+
         return $this->render('portfolio/index.html.twig', [
-            'portfolios' => $portfolioRepository->findAll(),
+            'portfolios' => $portfolios,
         ]);
     }
 
@@ -65,6 +76,8 @@ final class PortfolioController extends AbstractController
     #[Route('/{id}', name: 'app_portfolio_show', methods: ['GET'])]
     public function show(Portfolio $portfolio): Response
     {
+        $this->denyAccessUnlessGranted(PortfolioVoter::VIEW, $portfolio);
+
         return $this->render('portfolio/show.html.twig', [
             'portfolio' => $portfolio,
         ]);
@@ -73,6 +86,8 @@ final class PortfolioController extends AbstractController
     #[Route('/{id}/edit', name: 'app_portfolio_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Portfolio $portfolio, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted(PortfolioVoter::EDIT, $portfolio);
+
         $form = $this->createForm(PortfolioType::class, $portfolio);
         $form->handleRequest($request);
 
@@ -91,6 +106,8 @@ final class PortfolioController extends AbstractController
     #[Route('/{id}', name: 'app_portfolio_delete', methods: ['POST'])]
     public function delete(Request $request, Portfolio $portfolio, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted(PortfolioVoter::DELETE, $portfolio);
+
         if ($this->isCsrfTokenValid('delete'.$portfolio->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($portfolio);
             $entityManager->flush();
