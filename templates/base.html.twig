@@ -28,8 +28,9 @@
             </nav>
             {% if app.user %}
                 <div class="auth-buttons">
-                    <p>Bonjour {{ app.user.email }} !</p>
-                    <a href="/logout" class="btn btn-primary">logout</a>
+{#                    <p>Bonjour {{ app.user.email }} !</p>#}
+                    <a href="/account" class="btn btn-primary"><i data-lucide="circle-user-round"></i></a>
+                    <a href="/logout" class="btn btn-outline">logout</a>
                 </div>
             {% else %}
                 <div class="auth-buttons">
