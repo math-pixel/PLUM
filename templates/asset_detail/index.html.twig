@@ -9,34 +9,38 @@
         <div class="container">
             <!-- Asset Header -->
             <div class="asset-header">
-{#                <h1 class="asset-title">{{ asset.name }}</h1>#}
+                <h1 class="asset-title">{{ assetName }}</h1>
 {#                {% if asset.description %}#}
 {#                    <p class="asset-description">{{ asset.description }}</p>#}
 {#                {% endif %}#}
             </div>
 
             <!-- Chart Legend -->
-            <div class="chart-legend">
-                <div class="legend-item legend-investment active" data-series="investment">
-                    <div class="legend-color color-investment"></div>
-                    <span class="legend-label">Investment</span>
-                </div>
-                <div class="legend-item legend-interest active" data-series="interest">
-                    <div class="legend-color color-interest"></div>
-                    <span class="legend-label">Interest</span>
-                </div>
-                <div class="legend-item legend-profit active" data-series="profit">
-                    <div class="legend-color color-profit"></div>
-                    <span class="legend-label">Profit</span>
-                </div>
-            </div>
+{#            <div class="chart-legend">#}
+{#                <div class="legend-item legend-investment active" data-series="investment">#}
+{#                    <div class="legend-color color-investment"></div>#}
+{#                    <span class="legend-label">Investment</span>#}
+{#                </div>#}
+{#                <div class="legend-item legend-interest active" data-series="interest">#}
+{#                    <div class="legend-color color-interest"></div>#}
+{#                    <span class="legend-label">Interest</span>#}
+{#                </div>#}
+{#                <div class="legend-item legend-profit active" data-series="profit">#}
+{#                    <div class="legend-color color-profit"></div>#}
+{#                    <span class="legend-label">Profit</span>#}
+{#                </div>#}
+{#            </div>#}
 
             <!-- Chart Container -->
             <div class="chart-container">
                 <!-- This div will be replaced with your symphony-ux-chartjs implementation -->
-                <div class="chart-placeholder" id="assetChart">
-                    Chart will be displayed here
-                </div>
+{#                <div class="chart-placeholder" id="assetChart">#}
+{#                    Chart will be displayed here#}
+{#                </div>#}
+{#                {{ dump(chartData) }}#}
+                <canvas id="myChart"></canvas>
+
+{#                {{ render_chart(chart) }}#}
             </div>
 
             <!-- Filter Controls -->
@@ -102,7 +106,8 @@
     </section>
 
     {% block javascripts %}
-        <script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script type="module">
             document.addEventListener('DOMContentLoaded', function() {
                 // Toggle chart series visibility when clicking on legend items
                 const legendItems = document.querySelectorAll('.legend-item');
@@ -142,6 +147,110 @@
                     });
                 });
             });
+
+
+
+            const ctx = document.getElementById('myChart').getContext('2d');
+
+            // Créer le graphique
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {{ chartData|raw }},
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                            titleColor: 'rgba(17, 24, 39, 1)',
+                            bodyColor: 'rgba(75, 85, 99, 1)',
+                            borderColor: 'rgba(229, 231, 235, 1)',
+                            borderWidth: 1,
+                            padding: 10,
+                            cornerRadius: 6,
+                            displayColors: true,
+                            usePointStyle: true,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += new Intl.NumberFormat('fr-FR', {
+                                            style: 'currency',
+                                            currency: 'EUR'
+                                        }).format(context.parsed.y);
+                                    }
+                                    return label;
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 12
+                                },
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(243, 244, 246, 1)',
+                                borderDash: [4, 4]
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 12
+                                },
+                                padding: 10
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(243, 244, 246, 1)',
+                                borderDash: [4, 4]
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Inter', sans-serif",
+                                    size: 12
+                                },
+                                padding: 10,
+                                callback: function(value) {
+                                    return new Intl.NumberFormat('fr-FR', {
+                                        style: 'currency',
+                                        currency: 'EUR',
+                                        maximumFractionDigits: 0
+                                    }).format(value);
+                                }
+                            },
+                            beginAtZero: true
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 4,
+                            hoverRadius: 5,
+                            hoverBorderWidth: 2,
+                            borderWidth:2,
+                            borderColor: 'white',         // contour blanc global
+                            backgroundColor: 'red'        // valeur fallback si non défini dans le dataset
+                        }
+                    },
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    }
+                }
+            });
+
         </script>
     {% endblock %}
 {% endblock %}
