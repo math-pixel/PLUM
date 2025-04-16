@@ -22,15 +22,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
-    #[ORM\OneToMany(targetEntity: UserAsset::class, mappedBy: 'user')]
-    private Collection $assets;
+    #[ORM\OneToMany(targetEntity: Transaction::class, mappedBy: 'user')]
+    private Collection $transactions;
 
     #[ORM\OneToMany(targetEntity: UserPlatform::class, mappedBy: 'user')]
     private Collection $plateforms;
 
     public function __construct()
     {
-        $this->assets = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
         $this->plateforms = new ArrayCollection();
     }
     public function getUserPlateforms(): Collection
@@ -38,9 +38,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->plateforms;
     }
 
-    public function getUserAssets(): Collection
+    public function getUserTransactions(): Collection
     {
-        return $this->assets;
+        return $this->transactions;
     }
 
     /**

@@ -3,12 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\Portfolio;
+use App\Entity\PortfolioAsset;
+use App\Form\PortfolioAssetType;
 use App\Form\PortfolioType;
+use App\Repository\AssetRepository;
 use App\Repository\PortfolioRepository;
 use App\Security\Voter\PortfolioVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,20 +21,31 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/portfolio')]
 final class PortfolioController extends AbstractController
 {
+    // Dans PortfolioController::index (ou dans la méthode qui affiche la liste des portfolios)
     #[Route('/', name: 'app_portfolio_index', methods: ['GET'])]
-    public function index(PortfolioRepository $portfolioRepository, Security $security): Response
+    public function index(PortfolioRepository $portfolioRepository, AssetRepository $assetRepository): Response
     {
-        // Récupération de l'utilisateur connecté
-        $user = $security->getUser();
-        if (!$user) {
-            throw $this->createAccessDeniedException('Vous devez être connecté pour consulter vos portfolios.');
+        $portfolios = $portfolioRepository->findBy(['user' => $this->getUser()]);
+
+        // Création d'un formulaire pour chaque portfolio
+        $forms = [];
+        foreach ($portfolios as $portfolio) {
+            $portfolioAsset = new PortfolioAsset();
+            $portfolioAsset->setPortfolio($portfolio);
+            $form = $this->createForm(PortfolioAssetType::class, $portfolioAsset, [
+                'action' => $this->generateUrl('app_portfolio_add_asset', ['id' => $portfolio->getId()]),
+                'method' => 'POST',
+            ]);
+            $forms[$portfolio->getId()] = $form->createView();
         }
 
-        // Récupérer uniquement les portfolios appartenant à l'utilisateur
-        $portfolios = $portfolioRepository->findBy(['user' => $user]);
+        // Optionnel : récupérer tous les assets disponibles pour le select, si nécessaire
+        $assets = $assetRepository->findAll();
 
         return $this->render('portfolio/index.html.twig', [
             'portfolios' => $portfolios,
+            'forms' => $forms,
+            'assets' => $assets, // si besoin dans le template pour un fallback
         ]);
     }
 
@@ -77,7 +92,6 @@ final class PortfolioController extends AbstractController
     #[IsGranted('view', 'portfolio')]
     public function show(Portfolio $portfolio): Response
     {
-        $this->denyAccessUnlessGranted(PortfolioVoter::VIEW, $portfolio);
 
         return $this->render('portfolio/show.html.twig', [
             'portfolio' => $portfolio,
@@ -88,7 +102,6 @@ final class PortfolioController extends AbstractController
     #[IsGranted('edit', 'portfolio')]
     public function edit(Request $request, Portfolio $portfolio, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted(PortfolioVoter::EDIT, $portfolio);
 
         $form = $this->createForm(PortfolioType::class, $portfolio);
         $form->handleRequest($request);
@@ -113,5 +126,23 @@ final class PortfolioController extends AbstractController
         $entityManager->flush();
 
         return $this->redirectToRoute('app_portfolio_index');
+    }
+    #[Route('/portfolio/{portfolioId}/asset/{assetId}/link', name: 'app_portfolio_asset_link', methods: ['POST'])]
+    public function linkAssetToPortfolio(int $portfolioId, int $assetId, Request $request, EntityManagerInterface $entityManager, PortfolioRepository $portfolioRepository, AssetRepository $assetRepository): JsonResponse
+    {
+        $portfolio = $portfolioRepository->find( $portfolioId);
+        $asset = $assetRepository->find($assetId);
+        if (!$portfolio || !$asset) {
+            return new JsonResponse(['message' => 'Not Found'], 404);
+        }
+
+        $portfolioAsset = new PortfolioAsset();
+        $portfolioAsset->setPortfolio($portfolio);
+        $portfolioAsset->setAsset($asset);
+
+        $entityManager->persist($portfolioAsset);
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Asset linked successfully'], 200);
     }
 }

@@ -1,11 +1,45 @@
 {% if children|length > 0 %}
     <div class="summary-item purple-gradient">
 
-    {% for child in children %}
-        <div class="summary-title"><strong>{{ child.name }}</strong></div>
-                <a href="{{ path('app_portfolio_new', {'parentId': child.id}) }}">Create Sub-Portfolio</a>
-                {# Appel récursif pour afficher les sous-portfolios #}
-                {% include 'portfolio/_portfolio_tree.html.twig' with { 'children': child.children } %}
+        {% for child in children %}
+            <div class="summary-title"><strong>{{ child.name }}</strong></div>
+
+            {# Formulaire de suppression du sous-portfolio #}
+            <form action="{{ path('app_portfolio_delete', {'id': child.id}) }}" method="post">
+                <button class="btn btn-sm btn-danger">Delete</button>
+            </form>
+
+            {# Affichage des assets associés au child #}
+            {% for pa in child.portfolioAssets %}
+                <div class="investment-list">
+                    <div class="investment-item">
+                        <div class="investment-info">
+                            <h4>
+                                <a href="{{ path('app_transaction_asset_list', { 'portfolioId': child.id, 'assetId': pa.asset.id }) }}">
+                                    {{ pa.asset.name }}
+                                </a>
+                            </h4>
+                            <p>Apple Inc.</p>
+                        </div>
+                        <div class="investment-value">
+                            <p class="value">$25,000</p>
+                            <p class="change positive">+3.2%</p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>No assets available</p>
+            {% endfor %}
+
+            <h2>Ajouter un asset</h2>
+            {# On inclut le formulaire propre au child #}
+            {{ include('portfolio/_add_asset_form.html.twig', { 'portfolio': child, 'form': forms[child.id] }) }}
+
+            {# Lien pour créer un sous-portfolio du child #}
+            <a href="{{ path('app_portfolio_new', {'parentId': child.id}) }}">Create Sub-Portfolio</a>
+
+            {# Appel récursif pour afficher les sous-portfolios du child #}
+            {% include 'portfolio/_portfolio_tree.html.twig' with { 'children': child.children, 'forms': forms } %}
         {% endfor %}
     </div>
 {% endif %}

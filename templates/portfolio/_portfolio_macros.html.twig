@@ -1,0 +1,57 @@
+{% macro renderPortfolio(portfolio, forms) %}
+    <div class="portfolio-summary">
+                                    <div class="summary-item purple-gradient">
+
+        <div class="summary-title"><strong>{{ portfolio.name }}</strong></div>
+
+        {# Formulaire de suppression du portfolio #}
+        <form action="{{ path('app_portfolio_delete', {'id': portfolio.id}) }}" method="post">
+            <button class="btn btn-sm btn-danger">Delete</button>
+        </form>
+
+        {# Affichage des assets associés #}
+        {% if portfolio.portfolioAssets|length > 0 %}
+            <div class="investment-list">
+                {% for pa in portfolio.portfolioAssets %}
+                    <div class="investment-item">
+                        <div class="investment-info">
+                            <h4>
+                                <a href="{{ path('app_transaction_asset_list', { 'portfolioId': portfolio.id, 'assetId': pa.asset.id }) }}">
+                                    {{ pa.asset.name }}
+                                </a>
+                            </h4>
+                            <p>{{ pa.asset.description|default('Apple Inc.') }}</p>
+                        </div>
+                        <div class="investment-value">
+                            <p class="value">$25,000</p>
+                            <p class="change positive">+3.2%</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No assets available</p>
+        {% endif %}
+
+        {# Formulaire d'ajout d'asset #}
+        <h2>Ajouter un asset</h2>
+        {{ include('portfolio/_add_asset_form.html.twig', { 'portfolio': portfolio, 'form': forms[portfolio.id] }) }}
+
+        {# Lien pour créer un sous-portfolio #}
+        <a href="{{ path('app_portfolio_new', {'parentId': portfolio.id}) }}" class="btn btn-sm btn-secondary">Create Sub-Portfolio</a>
+
+        {# Appel récursif pour les sous-portfolios #}
+        {% if portfolio.children|length > 0 %}
+            {{ _self.renderPortfolioTree(portfolio.children, forms) }}
+        {% endif %}
+    </div>
+    </div>
+{% endmacro %}
+
+{% macro renderPortfolioTree(children, forms) %}
+    <div class="portfolio-tree">
+        {% for child in children %}
+            {{ _self.renderPortfolio(child, forms) }}
+        {% endfor %}
+    </div>
+{% endmacro %}
