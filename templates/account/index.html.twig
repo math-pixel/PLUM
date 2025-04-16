@@ -2,6 +2,8 @@
 
 {% block title %}Edit Profile - InvestFolio{% endblock %}
 
+{% set page_css = ['profile-edit'] %}
+
 {% block body %}
     <section class="profile-section">
         <div class="container">
@@ -184,6 +186,8 @@
                             <h4 class="danger-title">Danger Zone</h4>
                             <p class="danger-description">These actions are irreversible. Please proceed with caution.</p>
 
+                            <div class  Please proceed with caution.</p>
+
                             <div class="form-button-wrapper">
                                 <button type="button" class="btn btn-outline btn-danger" id="deleteAccountBtn">
                                     Delete Account
@@ -222,30 +226,32 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const deleteAccountBtn = document.getElementById('deleteAccountBtn');
-            const deleteAccountModal = document.getElementById('deleteAccountModal');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-            const modalOverlay = document.querySelector('.custom-modal-overlay');
+    {% block javascripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const deleteAccountBtn = document.getElementById('deleteAccountBtn');
+                const deleteAccountModal = document.getElementById('deleteAccountModal');
+                const closeModalBtn = document.getElementById('closeModalBtn');
+                const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+                const modalOverlay = document.querySelector('.custom-modal-overlay');
 
-            // Open modal
-            deleteAccountBtn.addEventListener('click', function() {
-                deleteAccountModal.classList.add('show');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling
+                // Open modal
+                deleteAccountBtn.addEventListener('click', function() {
+                    deleteAccountModal.classList.add('show');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
+                });
+
+                // Close modal functions
+                const closeModal = function() {
+                    deleteAccountModal.classList.remove('show');
+                    document.body.style.overflow = ''; // Re-enable scrolling
+                };
+
+                closeModalBtn.addEventListener('click', closeModal);
+                cancelDeleteBtn.addEventListener('click', closeModal);
+                modalOverlay.addEventListener('click', closeModal);
             });
-
-            // Close modal functions
-            const closeModal = function() {
-                deleteAccountModal.classList.remove('show');
-                document.body.style.overflow = ''; // Re-enable scrolling
-            };
-
-            closeModalBtn.addEventListener('click', closeModal);
-            cancelDeleteBtn.addEventListener('click', closeModal);
-            modalOverlay.addEventListener('click', closeModal);
-        });
-    </script>
+        </script>
+    {% endblock %}
 {% endblock %}
 

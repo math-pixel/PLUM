@@ -1,0 +1,147 @@
+{% extends 'base.html.twig' %}
+
+{#{% block title %}{{ asset.name }} - InvestFolio{% endblock %}#}
+
+{% set page_css = ['asset_detail'] %}
+
+{% block body %}
+    <section class="asset-detail-section">
+        <div class="container">
+            <!-- Asset Header -->
+            <div class="asset-header">
+{#                <h1 class="asset-title">{{ asset.name }}</h1>#}
+{#                {% if asset.description %}#}
+{#                    <p class="asset-description">{{ asset.description }}</p>#}
+{#                {% endif %}#}
+            </div>
+
+            <!-- Chart Legend -->
+            <div class="chart-legend">
+                <div class="legend-item legend-investment active" data-series="investment">
+                    <div class="legend-color color-investment"></div>
+                    <span class="legend-label">Investment</span>
+                </div>
+                <div class="legend-item legend-interest active" data-series="interest">
+                    <div class="legend-color color-interest"></div>
+                    <span class="legend-label">Interest</span>
+                </div>
+                <div class="legend-item legend-profit active" data-series="profit">
+                    <div class="legend-color color-profit"></div>
+                    <span class="legend-label">Profit</span>
+                </div>
+            </div>
+
+            <!-- Chart Container -->
+            <div class="chart-container">
+                <!-- This div will be replaced with your symphony-ux-chartjs implementation -->
+                <div class="chart-placeholder" id="assetChart">
+                    Chart will be displayed here
+                </div>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label class="filter-label" for="investmentFilter">Investment Type</label>
+                    <select class="filter-select" id="investmentFilter">
+                        <option value="all">All Types</option>
+                        <option value="stocks">Stocks</option>
+                        <option value="crypto">Cryptocurrency</option>
+                        <option value="bonds">Bonds</option>
+                        <option value="realestate">Real Estate</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label" for="platformFilter">Platform</label>
+                    <select class="filter-select" id="platformFilter">
+                        <option value="all">All Platforms</option>
+                        <option value="binance">Binance</option>
+                        <option value="coinbase">Coinbase</option>
+                        <option value="robinhood">Robinhood</option>
+                        <option value="etoro">eToro</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label" for="timeFilter">Time Period</label>
+                    <select class="filter-select" id="timeFilter">
+                        <option value="1d">1 Day</option>
+                        <option value="1w">1 Week</option>
+                        <option value="1m">1 Month</option>
+                        <option value="3m">3 Months</option>
+                        <option value="1y" selected>1 Year</option>
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Asset Stats -->
+            <div class="asset-stats">
+                <div class="stat-card purple-gradient">
+                    <div class="stat-title">Current Value</div>
+{#                    <div class="stat-value">${{ asset.currentValue|number_format(2) }}</div>#}
+                </div>
+
+                <div class="stat-card blue-gradient">
+                    <div class="stat-title">Initial Investment</div>
+{#                    <div class="stat-value">${{ asset.initialInvestment|number_format(2) }}</div>#}
+                </div>
+
+                <div class="stat-card emerald-gradient">
+                    <div class="stat-title">Total Return</div>
+{#                    <div class="stat-value">{{ asset.returnPercentage|number_format(2) }}%</div>#}
+                </div>
+
+                <div class="stat-card amber-gradient">
+                    <div class="stat-title">Annual Yield</div>
+{#                    <div class="stat-value">{{ asset.annualYield|number_format(2) }}%</div>#}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% block javascripts %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Toggle chart series visibility when clicking on legend items
+                const legendItems = document.querySelectorAll('.legend-item');
+
+                legendItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        // Toggle active class
+                        this.classList.toggle('active');
+
+                        // Get the series name
+                        const series = this.getAttribute('data-series');
+
+                        // Here you would toggle the visibility of the corresponding series in your chart
+                        // This is a placeholder for your chart implementation
+                        console.log(`Toggle visibility of ${series} series`);
+
+                        // When you implement your chart, you'll replace this with actual chart toggling code
+                        // For example: myChart.toggleSeries(series);
+                    });
+                });
+
+                // Handle filter changes
+                const filters = document.querySelectorAll('.filter-select');
+
+                filters.forEach(filter => {
+                    filter.addEventListener('change', function() {
+                        // Get all current filter values
+                        const investmentType = document.getElementById('investmentFilter').value;
+                        const platform = document.getElementById('platformFilter').value;
+                        const timePeriod = document.getElementById('timeFilter').value;
+
+                        // Here you would update your chart based on the selected filters
+                        console.log(`Filters changed: Investment Type = ${investmentType}, Platform = ${platform}, Time Period = ${timePeriod}`);
+
+                        // When you implement your chart, you'll replace this with actual filtering code
+                        // For example: updateChartData(investmentType, platform, timePeriod);
+                    });
+                });
+            });
+        </script>
+    {% endblock %}
+{% endblock %}
