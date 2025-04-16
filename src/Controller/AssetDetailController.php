@@ -28,37 +28,34 @@ final class AssetDetailController extends AbstractController
             ],
         ];
 
+        $labels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
+        $datasets = [];
+
+        $labelsCharts = ['Investissement','Intérêts','Profit'];
+        $datas = [
+            [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+            [1000, 1020, 1040, 1080, 1100, 1150, 1200, 1300, 1400, 1500, 1600, 1700],
+            [0, 20, 40, 80, 100, 150, 200, 300, 400, 500, 600, 700],
+        ];
+        $colorSelected = ['purple', 'blue', 'emerald'];
+
+
+        for ($i = 0; $i < 3; $i++) {
+            $datasets[$i] = [
+                'label' => $labelsCharts[$i],
+                'data' => $datas[$i],
+                'backgroundColor' => $colors[$colorSelected[$i]]['fill'],
+                'borderColor' => $colors[$colorSelected[$i]]['stroke'],
+                'borderWidth' => 2,
+                'tension' => 0.4,
+                'fill' => true,
+            ];
+        }
+
+
         $chart = [
-            'labels' => ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
-            'datasets' => [
-                [
-                    'label' => 'Investissement',
-                    'data' => [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
-                    'backgroundColor' => $colors['purple']['fill'],
-                    'borderColor' => $colors['purple']['stroke'],
-                    'borderWidth' => 2,
-                    'tension' => 0.4,
-                    'fill' => true,
-                ],
-                [
-                    'label' => 'Intérêts',
-                    'data' => [1000, 1020, 1040, 1080, 1100, 1150, 1200, 1300, 1400, 1500, 1600, 1700],
-                    'backgroundColor' => $colors['blue']['fill'],
-                    'borderColor' => $colors['blue']['stroke'],
-                    'borderWidth' => 2,
-                    'tension' => 0.4,
-                    'fill' => true,
-                ],
-                [
-                    'label' => 'Profit',
-                    'data' => [0, 20, 40, 80, 100, 150, 200, 300, 400, 500, 600, 700],
-                    'backgroundColor' => $colors['emerald']['fill'],
-                    'borderColor' => $colors['emerald']['stroke'],
-                    'borderWidth' => 2,
-                    'tension' => 0.4,
-                    'fill' => true,
-                ],
-            ],
+            'labels' => $labels,
+            'datasets' => $datasets
         ];
 
 
@@ -70,3 +67,33 @@ final class AssetDetailController extends AbstractController
         ]);
     }
 }
+
+//[
+//    [
+//        'label' => 'Investissement',
+//        'data' => [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+//        'backgroundColor' => $colors['purple']['fill'],
+//        'borderColor' => $colors['purple']['stroke'],
+//        'borderWidth' => 2,
+//        'tension' => 0.4,
+//        'fill' => true,
+//    ],
+//    [
+//        'label' => 'Intérêts',
+//        'data' => [1000, 1020, 1040, 1080, 1100, 1150, 1200, 1300, 1400, 1500, 1600, 1700],
+//        'backgroundColor' => $colors['blue']['fill'],
+//        'borderColor' => $colors['blue']['stroke'],
+//        'borderWidth' => 2,
+//        'tension' => 0.4,
+//        'fill' => true,
+//    ],
+//    [
+//        'label' => 'Profit',
+//        'data' => [0, 20, 40, 80, 100, 150, 200, 300, 400, 500, 600, 700],
+//        'backgroundColor' => $colors['emerald']['fill'],
+//        'borderColor' => $colors['emerald']['stroke'],
+//        'borderWidth' => 2,
+//        'tension' => 0.4,
+//        'fill' => true,
+//    ],
+//],
