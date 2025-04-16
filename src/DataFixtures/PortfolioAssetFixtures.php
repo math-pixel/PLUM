@@ -4,6 +4,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Portfolio;
+use App\Entity\PortfolioAsset;
 use App\DataFixtures\PortfolioFixtures;
 use App\Entity\Asset;
 use App\DataFixtures\AssetFixtures;
@@ -26,10 +27,16 @@ class PortfolioAssetFixtures extends Fixture implements DependentFixtureInterfac
                 $assetIndex = rand(0, AssetFixtures::ASSET_COUNT - 1);
                 /** @var Asset $asset */
                 $asset = $this->getReference('asset_' . $assetIndex, Asset::class);
-                $portfolio->addAsset($asset);
-            }
 
-            $manager->persist($portfolio);
+                // Créer une nouvelle instance de l'entité intermédiaire
+                $portfolioAsset = new PortfolioAsset();
+                $portfolioAsset->setPortfolio($portfolio);
+                $portfolioAsset->setAsset($asset);
+                // Si tu souhaites ajouter d'autres informations (par ex. date d'ajout), tu peux les définir ici
+                // $portfolioAsset->setAddedAt(new \DateTime());
+
+                $manager->persist($portfolioAsset);
+            }
         }
 
         $manager->flush();

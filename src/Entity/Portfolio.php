@@ -19,26 +19,26 @@ class Portfolio
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    /**
-     * @var Collection<int, Asset>
-     */
-    #[ORM\ManyToMany(targetEntity: Asset::class)]
-    private Collection $assets;
-
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'children')]
     private ?self $parent = null;
 
-    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: self::class)]
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     private Collection $children;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'portfolios')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    /**
+     * @var Collection<int, PortfolioAsset>
+     */
+    #[ORM\OneToMany(targetEntity: PortfolioAsset::class, mappedBy: 'portfolio', orphanRemoval: true)]
+    private Collection $portfolioAssets;
+
     public function __construct()
     {
-        $this->assets = new ArrayCollection();
         $this->children = new ArrayCollection();
+        $this->portfolioAssets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -54,30 +54,6 @@ class Portfolio
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Asset>
-     */
-    public function getAssets(): Collection
-    {
-        return $this->assets;
-    }
-
-    public function addAsset(Asset $asset): static
-    {
-        if (!$this->assets->contains($asset)) {
-            $this->assets->add($asset);
-        }
-
-        return $this;
-    }
-
-    public function removeAsset(Asset $asset): static
-    {
-        $this->assets->removeElement($asset);
 
         return $this;
     }
@@ -131,6 +107,36 @@ class Portfolio
     public function setUser(User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PortfolioAsset>
+     */
+    public function getPortfolioAssets(): Collection
+    {
+        return $this->portfolioAssets;
+    }
+
+    public function addPortfolioAsset(PortfolioAsset $portfolioAsset): static
+    {
+        if (!$this->portfolioAssets->contains($portfolioAsset)) {
+            $this->portfolioAssets->add($portfolioAsset);
+            $portfolioAsset->setPortfolio($this);
+        }
+
+        return $this;
+    }
+
+    public function removePortfolioAsset(PortfolioAsset $portfolioAsset): static
+    {
+        if ($this->portfolioAssets->removeElement($portfolioAsset)) {
+            // set the owning side to null (unless already changed)
+            if ($portfolioAsset->getPortfolio() === $this) {
+                $portfolioAsset->setPortfolio(null);
+            }
+        }
 
         return $this;
     }

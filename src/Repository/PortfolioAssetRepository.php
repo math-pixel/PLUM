@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\UserAsset;
+use App\Entity\PortfolioAsset;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<UserAsset>
+ * @extends ServiceEntityRepository<PortfolioAsset>
  */
-class UserAssetRepository extends ServiceEntityRepository
+class PortfolioAssetRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UserAsset::class);
+        parent::__construct($registry, PortfolioAsset::class);
     }
 
     //    /**
-    //     * @return UserAsset[] Returns an array of UserAsset objects
+    //     * @return PortfolioAsset[] Returns an array of PortfolioAsset objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
+    //            ->orderBy('p.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?UserAsset
+    //    public function findOneBySomeField($value): ?PortfolioAsset
     //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

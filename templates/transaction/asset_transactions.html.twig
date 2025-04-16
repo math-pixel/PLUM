@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transactions pour {{ asset.name }}{% endblock %}
+
+{% block body %}
+    <h1>Transactions pour {{ asset.name }} dans le portfolio {{ portfolio.name }}</h1>
+
+    {% if transactions|length > 0 %}
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for transaction in transactions %}
+                <tr>
+                    <td>{{ transaction.id }}</td>
+                    <td>{{ transaction.quantity }}</td>
+                    <td>{{ (transaction.price / 100)|number_format(2, '.', ',') }} €</td>
+                    <td>{{ transaction.createdAt|date('d/m/Y H:i') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune transaction trouvée.</p>
+    {% endif %}
+
+    <a href="{{ path('app_portfolio_show', {'id': portfolio.id}) }}">Retour au portfolio</a>
+{% endblock %}
