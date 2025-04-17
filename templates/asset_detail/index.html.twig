@@ -9,7 +9,7 @@
         <div class="container">
             <!-- Asset Header -->
             <div class="asset-header">
-                <h1 class="asset-title">{{ assetName }}</h1>
+                <h1 class="asset-title">{{ asset.name }}</h1>
 {#                {% if asset.description %}#}
 {#                    <p class="asset-description">{{ asset.description }}</p>#}
 {#                {% endif %}#}
@@ -103,6 +103,8 @@
                 </div>
             </div>
         </div>
+        {{ include('/transaction/_asset_transactions.html.twig') }}
+        <a href="{{ path('app_transaction_new') }}">Ajouter une transaction</a>
     </section>
 
     {% block javascripts %}
@@ -155,7 +157,7 @@
             // Créer le graphique
             const myChart = new Chart(ctx, {
                 type: 'line',
-                data: {{ chartData|raw }},
+                data: {{ chart.getData()|json_encode|raw }},
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
@@ -253,4 +255,5 @@
 
         </script>
     {% endblock %}
+
 {% endblock %}

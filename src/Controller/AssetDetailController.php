@@ -5,16 +5,20 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
+use App\Repository\TransactionRepository;
+use App\Entity\Asset;
+use Symfony\Component\HttpFoundation\Request;
 
 final class AssetDetailController extends AbstractController
 {
-    #[Route('/detail', name: 'app_asset_detail')]
-    public function index(): Response
+    #[Route('/asset/{id}/chart', name: 'app_asset_chart', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function chart(Asset $asset, ChartBuilderInterface $chartBuilder, TransactionRepository $transactionRepository): Response
     {
         $colors = [
-            // Couleurs existantes
             'purple' => [
                 'fill' => 'rgba(139, 92, 246, 0.2)',
                 'stroke' => 'rgba(139, 92, 246, 1)',
@@ -27,8 +31,6 @@ final class AssetDetailController extends AbstractController
                 'fill' => 'rgba(16, 185, 129, 0.2)',
                 'stroke' => 'rgba(16, 185, 129, 1)',
             ],
-
-            // Nouvelles couleurs
             'amber' => [
                 'fill' => 'rgba(245, 158, 11, 0.2)',
                 'stroke' => 'rgba(245, 158, 11, 1)',
@@ -83,72 +85,51 @@ final class AssetDetailController extends AbstractController
             ],
         ];
 
-        $labels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
-        $datasets = [];
+        $transactions = $transactionRepository->findBy(
+            ['asset' => $asset, 'user' => $this->getUser()],
+            ['id' => 'ASC']
+        );
+        $labels = [];
+        $investments = [];
+        $prices = [];
+        $cumulativeInvestment = 0;
 
-        $labelsCharts = ['Investissement','Intérêts','Profit'];
-        $datas = [
-            [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
-            [1000, 1020, 1040, 1080, 1100, 1150, 1200, 1300, 1400, 1500, 1600, 1700],
-            [0, 20, 40, 80, 100, 150, 200, 300, 400, 500, 600, 700],
-        ];
-        $colorSelected = ['fuchsia', 'red', 'emerald'];
-
-
-        for ($i = 0; $i < 3; $i++) {
-            $datasets[$i] = [
-                'label' => $labelsCharts[$i],
-                'data' => $datas[$i],
-                'backgroundColor' => $colors[$colorSelected[$i]]['fill'],
-                'borderColor' => $colors[$colorSelected[$i]]['stroke'],
-                'borderWidth' => 2,
-                'tension' => 0.4,
-                'fill' => true,
-            ];
+        foreach ($transactions as $transaction) {
+            $cumulativeInvestment += $transaction->getQuantity() * ($transaction->getPrice() / 100);
+            $labels[] = 'T' . $transaction->getId();
+            $investments[] = $cumulativeInvestment;
+            $prices[] = $transaction->getPrice() / 100;
         }
 
-
-        $chart = [
+        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chart->setData([
             'labels' => $labels,
-            'datasets' => $datasets
-        ];
-
+            'datasets' => [
+                [
+                    'label' => 'Investissement cumulé',
+                    'data' => $investments,
+                    'backgroundColor' => $colors['fuchsia']['fill'],
+                    'borderColor' => $colors['fuchsia']['stroke'],
+                    'borderWidth' => 2,
+                    'tension' => 0.4,
+                    'fill' => true,
+                ],
+                [
+                    'label' => 'Prix d\'achat',
+                    'data' => $prices,
+                    'backgroundColor' => $colors['red']['fill'],
+                    'borderColor' => $colors['red']['stroke'],
+                    'borderWidth' => 2,
+                    'tension' => 0.4,
+                    'fill' => false,
+                ],
+            ],
+        ]);
 
         return $this->render('asset_detail/index.html.twig', [
-            'controller_name' => 'AssetDetailController',
-            'chartData' => json_encode($chart),
-            'assetName' => "BTC",
-            'assetIcon' => "aaa"
+            'chart' => $chart,
+            'asset' => $asset,
+            'transactions' => $transactions,
         ]);
     }
 }
-
-//[
-//    [
-//        'label' => 'Investissement',
-//        'data' => [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
-//        'backgroundColor' => $colors['purple']['fill'],
-//        'borderColor' => $colors['purple']['stroke'],
-//        'borderWidth' => 2,
-//        'tension' => 0.4,
-//        'fill' => true,
-//    ],
-//    [
-//        'label' => 'Intérêts',
-//        'data' => [1000, 1020, 1040, 1080, 1100, 1150, 1200, 1300, 1400, 1500, 1600, 1700],
-//        'backgroundColor' => $colors['blue']['fill'],
-//        'borderColor' => $colors['blue']['stroke'],
-//        'borderWidth' => 2,
-//        'tension' => 0.4,
-//        'fill' => true,
-//    ],
-//    [
-//        'label' => 'Profit',
-//        'data' => [0, 20, 40, 80, 100, 150, 200, 300, 400, 500, 600, 700],
-//        'backgroundColor' => $colors['emerald']['fill'],
-//        'borderColor' => $colors['emerald']['stroke'],
-//        'borderWidth' => 2,
-//        'tension' => 0.4,
-//        'fill' => true,
-//    ],
-//],

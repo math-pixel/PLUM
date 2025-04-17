@@ -47,7 +47,7 @@ final class TransactionController extends AbstractController
 
         return $this->render('transaction/new.html.twig', [
             'transaction' => $transaction,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -75,7 +75,7 @@ final class TransactionController extends AbstractController
 
         return $this->render('transaction/edit.html.twig', [
             'transaction' => $transaction,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -83,10 +83,9 @@ final class TransactionController extends AbstractController
     #[IsGranted('delete', 'transaction')]
     public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $transaction->getId(), $request->get('_token'))) {
+
             $entityManager->remove($transaction);
             $entityManager->flush();
-        }
 
         return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
     }
@@ -107,18 +106,13 @@ final class TransactionController extends AbstractController
             throw $this->createNotFoundException('Portfolio or asset not found');
         }
 
-        // Vérifier que le portfolio appartient à l'utilisateur connecté, si nécessaire
-        if ($portfolio->getUser() !== $this->getUser()) {
-            throw $this->createAccessDeniedException('Accès non autorisé.');
-        }
-
         // Récupérer les transactions pour cet asset et utilisateur
         $transactions = $transactionRepository->findBy([
             'user' => $this->getUser(),
             'asset' => $asset
         ]);
 
-        return $this->render('transaction/asset_transactions.html.twig', [
+        return $this->render('transaction/asset_transactions_portfolio.html.twig', [
             'portfolio'    => $portfolio,
             'asset'        => $asset,
             'transactions' => $transactions,

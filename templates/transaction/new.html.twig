@@ -6,7 +6,10 @@
     <h1>Create New Transaction</h1>
 
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.quantity) }}
+    {{ form_row(form.price) }}
+    {{ form_row(form.asset) }}
+    {{ form_rest(form) }}
     <button class="btn">Save</button>
     {{ form_end(form) }}
 

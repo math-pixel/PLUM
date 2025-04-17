@@ -21,8 +21,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/portfolio')]
 final class PortfolioController extends AbstractController
 {
-    // Dans PortfolioController::index (ou dans la méthode qui affiche la liste des portfolios)
     #[Route('/', name: 'app_portfolio_index', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(PortfolioRepository $portfolioRepository, AssetRepository $assetRepository): Response
     {
         $portfolios = $portfolioRepository->findBy(['user' => $this->getUser()]);
