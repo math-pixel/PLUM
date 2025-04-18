@@ -92,8 +92,13 @@
                                                             {% endif %}
                                                         </span>
                                                         </div>
+                                                        <a href="/asset/{{ portfolioAsset.asset.id }}/chart" class="btn btn-primary btn-sm">
+                                                            View {{ portfolioAsset.asset.name }}
+                                                            <i data-lucide="arrow-right"></i>
+                                                        </a>
                                                     </div>
                                                 </div>
+
                                             {% endfor %}
                                         {% else %}
                                             <div class="empty-message">
