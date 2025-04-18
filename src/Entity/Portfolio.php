@@ -140,4 +140,8 @@ class Portfolio
 
         return $this;
     }
+
+//    public function getTotalAmount(): int{
+//        return 0;
+//    }
 }

@@ -1,24 +1,3 @@
-{#
-{% extends 'base.html.twig' %}
-
-{% block title %}Register{% endblock %}
-
-{% block body %}
-    <h1>Register</h1>
-
-    {{ form_errors(registrationForm) }}
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
-{% endblock %}
-#}
 {% extends 'base.html.twig' %}
 
 {% set page_css = ['auth'] %}
@@ -50,17 +29,9 @@
                         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
                     </div>
 
-{#                    <div class="form-group form-checkbox">#}
-{#                        {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'form-checkbox-input'}}) }}#}
-{#                        <div class="remember-me">#}
-{#                            <input type="checkbox" id="_remember_me" name="_remember_me" class="form-checkbox-input">#}
-{#                            <label for="_remember_me" class="form-checkbox-label">I agree to the Terms of Service and Privacy Policy</label>#}
-{#                        </div>#}
-{#                    </div>#}
-
                     <button type="submit" class="btn btn-primary btn-block">Create Account</button>
-{#                    {{ form_end(registrationForm) }}#}
-
+                      {{ form_rest(registrationForm) }}
+                    {{ form_end(registrationForm) }}
                     <div class="auth-footer">
                         <p>Already have an account? <a href="{{ path('app_login') }}" class="auth-link">Login</a></p>
                     </div>
