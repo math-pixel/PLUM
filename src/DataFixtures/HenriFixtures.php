@@ -1,5 +1,5 @@
 <?php
-// src/DataFixtures/DemoFixtures.php
+// src/DataFixtures/HenriFixtures.php
 
 namespace App\DataFixtures;
 
@@ -35,33 +35,41 @@ class HenriFixtures extends Fixture
 
         // 2. Portfolios
         $parent = new Portfolio();
-        $parent->setName('le meilleur prof')->setUser($henri);
+        $parent->setName('le meilleur prof');
+        $parent->setUser($henri);
         $manager->persist($parent);
 
         $child = new Portfolio();
-        $child->setName('les meilleurs élèves')->setUser($henri)->setParent($parent);
+        $child->setName('les meilleurs élèves');
+        $child->setUser($henri);
+        $child->setParent($parent);
         $manager->persist($child);
 
         // 3. Asset for parent portfolio only
         $henriAsset = new Asset();
         $henriAsset->setName('HENRI');
+        $henriAsset->setSymbol('HNR');
+        $henriAsset->setCurrentValue($faker->randomFloat(2, 10, 200));
         $manager->persist($henriAsset);
 
         $parentPa = new PortfolioAsset();
-        $parentPa->setPortfolio($parent)
-                 ->setAsset($henriAsset);
+        $parentPa->setPortfolio($parent);
+        $parentPa->setAsset($henriAsset);
         $manager->persist($parentPa);
 
         // 4. Assets for child portfolio only
         $childAssetNames = ['MATHIEU', 'UGO', 'PL'];
         foreach ($childAssetNames as $name) {
             $asset = new Asset();
+            $symbol = strtoupper(substr($name, 0, 3));
             $asset->setName($name);
+            $asset->setSymbol($symbol);
+            $asset->setCurrentValue($faker->randomFloat(2, 10, 200));
             $manager->persist($asset);
 
             $pa = new PortfolioAsset();
-            $pa->setPortfolio($child)
-               ->setAsset($asset);
+            $pa->setPortfolio($child);
+            $pa->setAsset($asset);
             $manager->persist($pa);
 
             // 5. Generate realistic transactions for Henri on this asset
@@ -73,10 +81,10 @@ class HenriFixtures extends Fixture
                     $qty = -$faker->numberBetween(1, min($qty, 50));
                 }
                 $price = round($faker->randomFloat(2, 5, 50), 2);
-                $tx->setUser($henri)
-                   ->setAsset($asset)
-                   ->setQuantity($qty)
-                   ->setPrice($price);
+                $tx->setUser($henri);
+                $tx->setAsset($asset);
+                $tx->setQuantity($qty);
+                $tx->setPrice($price);
                 $manager->persist($tx);
             }
         }

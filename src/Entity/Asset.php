@@ -25,6 +25,13 @@ class Asset
     #[ORM\OneToMany(targetEntity: PortfolioAsset::class, mappedBy: 'asset', orphanRemoval: true)]
     private Collection $portfolioAssets;
 
+
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
+    private ?string $symbol = null;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $currentValue = null;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -80,4 +87,26 @@ class Asset
 
         return $this;
     }
+
+    public function getSymbol(): ?string
+    {
+        return $this->symbol;
+    }
+
+    public function setSymbol(?string $symbol): void
+    {
+        $this->symbol = $symbol;
+    }
+
+    public function getCurrentValue(): ?float
+    {
+        return $this->currentValue;
+    }
+
+    public function setCurrentValue(?float $currentValue): self
+    {
+        $this->currentValue = $currentValue;
+        return $this;
+    }
+
 }
