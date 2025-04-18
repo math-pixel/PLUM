@@ -108,7 +108,7 @@
                                     </div>
 
                                     <div class="action-container">
-                                        <a href="{{ path('app_asset_new', {'portfolio': portfolio.id}) }}" class="btn btn-primary btn-sm">
+                                        <a href="/portfolio/{{ portfolio.id }}/add-asset" class="btn btn-primary btn-sm">
                                             <i data-lucide="plus"></i> Add Asset to {{ portfolio.name }}
                                         </a>
                                     </div>
@@ -206,7 +206,7 @@
                                                         </div>
 
                                                         <div class="action-container">
-                                                            <a href="{{ path('app_asset_new', {'portfolio': child.id}) }}" class="btn btn-primary btn-sm">
+                                                            <a href="/portfolio/{{ child.id }}/add-asset" class="btn btn-primary btn-sm">
                                                                 <i data-lucide="plus"></i> Add Asset to {{ child.name }}
                                                             </a>
                                                             <a href="{{ path('app_portfolio_new', {'parent': portfolio.id}) }}" class="btn btn-primary btn-close"><i data-lucide="plus"></i> Add Subportfolio to {{ child.name }}</a>
