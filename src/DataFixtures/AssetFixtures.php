@@ -16,10 +16,25 @@ class AssetFixtures extends Fixture
     {
         $faker = Factory::create('fr_FR');
 
-        for ($i = 0; $i < self::ASSET_COUNT; $i++) {
-            $asset = new Asset();
-            $asset->setName($faker->word);
+        // Quelques exemples d'assets réels avec symboles connus
+        $assets = [
+            ['name' => 'Apple', 'symbol' => 'AAPL'],
+            ['name' => 'Microsoft', 'symbol' => 'MSFT'],
+            ['name' => 'Tesla', 'symbol' => 'TSLA'],
+            ['name' => 'Amazon', 'symbol' => 'AMZN'],
+            ['name' => 'Google', 'symbol' => 'GOOGL'],
+            ['name' => 'Bitcoin', 'symbol' => 'BTC-USD'],
+            ['name' => 'Ethereum', 'symbol' => 'ETH-USD'],
+            ['name' => 'TotalEnergies', 'symbol' => 'TTE.PA'],
+            ['name' => 'BNP Paribas', 'symbol' => 'BNP.PA'],
+            ['name' => 'Airbus', 'symbol' => 'AIR.PA'],
+        ];
 
+        foreach ($assets as $i => $data) {
+            $asset = new Asset();
+            $asset->setName($data['name']);
+            $asset->setSymbol($data['symbol']);
+            $asset->setCurrentValue($faker->randomFloat(2, 10, 1000));
             $manager->persist($asset);
             $this->addReference('asset_' . $i, $asset);
         }

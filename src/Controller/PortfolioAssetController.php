@@ -10,18 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class PortfolioAssetController extends AbstractController
 {
-    #[Route('/portfolio/asset', name: 'app_portfolio_asset')]
-    public function index(): Response
-    {
-        return $this->render('portfolio_asset/index.html.twig', [
-            'controller_name' => 'PortfolioAssetController',
-        ]);
-    }
 
     #[Route('/portfolio/{id}/add-asset', name: 'app_portfolio_add_asset', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function addAsset(Portfolio $portfolio, Request $request, EntityManagerInterface $entityManager): Response
     {
         // Crée une nouvelle instance de PortfolioAsset et associe automatiquement le portfolio

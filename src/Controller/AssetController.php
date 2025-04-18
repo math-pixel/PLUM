@@ -10,11 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/asset')]
 final class AssetController extends AbstractController
 {
     #[Route(name: 'app_asset_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(AssetRepository $assetRepository): Response
     {
         return $this->render('asset/index.html.twig', [
@@ -23,6 +25,7 @@ final class AssetController extends AbstractController
     }
 
     #[Route('/new', name: 'app_asset_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $asset = new Asset();
@@ -43,6 +46,7 @@ final class AssetController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_asset_show', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(Asset $asset): Response
     {
         return $this->render('asset/show.html.twig', [
@@ -51,6 +55,7 @@ final class AssetController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_asset_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Asset $asset, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(AssetType::class, $asset);
@@ -69,6 +74,7 @@ final class AssetController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_asset_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Asset $asset, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$asset->getId(), $request->getPayload()->getString('_token'))) {

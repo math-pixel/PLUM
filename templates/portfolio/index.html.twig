@@ -2,6 +2,8 @@
 
 {% import 'portfolio/_portfolio_macros.html.twig' as pf %}
 
+{% set page_css = ['portfolio'] %}
+
 {% block body %}
     <section class="portfolio-section">
         <div class="container">
@@ -15,6 +17,8 @@
                         <i data-lucide="plus"></i> Add Investment
                     </a>
                 </div>
+                <p>Total Value: {{totalValue|number_format(2, ',', ' ') }} €</p>
+                <p>Total Quantity: {{ totalQuantity }}</p>
             </div>
 
             {% if portfolios|length > 0 %}

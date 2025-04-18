@@ -16,14 +16,14 @@
                     <div class="investment-item">
                         <div class="investment-info">
                             <h4>
-                                <a href="{{ path('app_transaction_asset_list', { 'portfolioId': portfolio.id, 'assetId': pa.asset.id }) }}">
+                                <a href="{{ path('app_asset_chart', { 'id': pa.asset.id }) }}">
                                     {{ pa.asset.name }}
                                 </a>
                             </h4>
-                            <p>{{ pa.asset.description|default('Apple Inc.') }}</p>
+{#                            <p>{{ pa.asset.description|default('Apple Inc.') }}</p>#}
                         </div>
                         <div class="investment-value">
-                            <p class="value">$25,000</p>
+                            <p class="value"></p>
                             <p class="change positive">+3.2%</p>
                         </div>
                     </div>

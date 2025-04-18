@@ -21,7 +21,7 @@
                     <td>{{ transaction.id }}</td>
                     <td>{{ transaction.quantity }}</td>
                     <td>{{ (transaction.price / 100)|number_format(2, '.', ',') }} €</td>
-                    <td>{{ transaction.createdAt|date('d/m/Y H:i') }}</td>
+{#                    <td>{{ transaction.createdAt|date('d/m/Y H:i') }}</td>#}
                 </tr>
             {% endfor %}
             </tbody>
