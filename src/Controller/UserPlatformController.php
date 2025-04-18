@@ -10,11 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/user/platform')]
 final class UserPlatformController extends AbstractController
 {
     #[Route(name: 'app_user_platform_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(UserPlatformRepository $userPlatformRepository): Response
     {
         return $this->render('user_platform/index.html.twig', [
@@ -23,6 +25,7 @@ final class UserPlatformController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_platform_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $userPlatform = new UserPlatform();
@@ -43,6 +46,7 @@ final class UserPlatformController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_platform_show', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(UserPlatform $userPlatform): Response
     {
         return $this->render('user_platform/show.html.twig', [
@@ -51,6 +55,7 @@ final class UserPlatformController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_user_platform_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, UserPlatform $userPlatform, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(UserPlatformType::class, $userPlatform);
@@ -69,6 +74,7 @@ final class UserPlatformController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_platform_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, UserPlatform $userPlatform, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$userPlatform->getId(), $request->getPayload()->getString('_token'))) {

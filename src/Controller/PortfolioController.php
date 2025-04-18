@@ -55,6 +55,7 @@ final class PortfolioController extends AbstractController
     }
 
     #[Route('/new', name: 'app_portfolio_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function new(Request $request, EntityManagerInterface $entityManager, Security $security): Response
     {
         // Récupération de l'utilisateur connecté
