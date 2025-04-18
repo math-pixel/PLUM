@@ -91,6 +91,7 @@ final class TransactionController extends AbstractController
     }
 
     #[Route('/transaction/portfolio/{portfolioId}/asset/{assetId}', name: 'app_transaction_asset_list', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function assetTransactions(
         int $portfolioId,
         int $assetId,
