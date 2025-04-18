@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\AssetService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,7 +17,7 @@ final class AssetDetailController extends AbstractController
 {
     #[Route('/asset/{id}/chart', name: 'app_asset_chart', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function chart(Asset $asset, ChartBuilderInterface $chartBuilder, TransactionRepository $transactionRepository): Response
+    public function chart(Asset $asset, ChartBuilderInterface $chartBuilder, TransactionRepository $transactionRepository, AssetService $assetService): Response
     {
         $colors = [
             'purple' => [
@@ -148,11 +149,14 @@ final class AssetDetailController extends AbstractController
                 ],
             ],
         ]);
-
+        $totalQuantity = $assetService->getTotalQuantity($asset, $this->getUser());
+        $totalValue = $assetService->getCurrentValue($asset, $this->getUser());
         return $this->render('asset_detail/index.html.twig', [
             'chart' => $chart,
             'asset' => $asset,
             'transactions' => $transactions,
+            'totalQuantity' => $totalQuantity,
+            'totalValue' => $totalValue,
         ]);
     }
 }

@@ -8,7 +8,9 @@ use App\Form\PortfolioAssetType;
 use App\Form\PortfolioType;
 use App\Repository\AssetRepository;
 use App\Repository\PortfolioRepository;
+use App\Repository\TransactionRepository;
 use App\Security\Voter\PortfolioVoter;
+use App\Service\AssetService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -23,9 +25,10 @@ final class PortfolioController extends AbstractController
 {
     #[Route('/', name: 'app_portfolio_index', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function index(PortfolioRepository $portfolioRepository, AssetRepository $assetRepository): Response
+    public function index(PortfolioRepository $portfolioRepository, AssetRepository $assetRepository, AssetService $assetService): Response
     {
-        $portfolios = $portfolioRepository->findBy(['user' => $this->getUser()]);
+        $user = $this->getUser();
+        $portfolios = $portfolioRepository->findBy(['user' => $user]);
 
         // Création d'un formulaire pour chaque portfolio
         $forms = [];
@@ -39,13 +42,15 @@ final class PortfolioController extends AbstractController
             $forms[$portfolio->getId()] = $form->createView();
         }
 
-        // Optionnel : récupérer tous les assets disponibles pour le select, si nécessaire
         $assets = $assetRepository->findAll();
-
+        $totalQuantity = $assetService->getUserTotalQuantity($user);
+        $totalValue = $assetService->getUserTotalValue($user);
         return $this->render('portfolio/index.html.twig', [
             'portfolios' => $portfolios,
             'forms' => $forms,
-            'assets' => $assets, // si besoin dans le template pour un fallback
+            'assets' => $assets,
+            'totalQuantity' => $totalQuantity,
+            'totalValue' => $totalValue,
         ]);
     }
 

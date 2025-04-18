@@ -17,6 +17,8 @@
                         <i data-lucide="plus"></i> Add Investment
                     </a>
                 </div>
+                <p>Total Value: {{totalValue|number_format(2, ',', ' ') }} €</p>
+                <p>Total Quantity: {{ totalQuantity }}</p>
             </div>
 
             {% if portfolios|length > 0 %}
