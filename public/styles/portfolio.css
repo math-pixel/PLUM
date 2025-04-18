@@ -167,7 +167,7 @@
 }
 
 .bento-item {
-    background: linear-gradient(to bottom right, var(--purple-50), var(--purple-100));
+    background-color: rgb(from var(--purple-200) r g b / 0.5);
     border-radius: 1rem;
     overflow: hidden;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -183,7 +183,6 @@
 .portfolio-card {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(to bottom right, var(--blue-50), var(--blue-100));
 }
 
 .portfolio-card-header {
@@ -254,7 +253,7 @@
 
 /* Asset Card */
 .asset-card {
-    background-color: var(--white);
+    background-color: var(--purple-50);
     border-radius: 0.75rem;
     padding: 1rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -297,13 +296,13 @@
 
 @media (min-width: 640px) {
     .subportfolios-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(1, 1fr);
     }
 }
 
 /* Subportfolio Card */
 .subportfolio-card {
-    background: linear-gradient(to bottom right, var(--blue-50), var(--blue-100));
+    /*background: linear-gradient(to bottom right, var(--blue-50), var(--blue-100));*/
 }
 
 .subportfolio-card .portfolio-card-header {
@@ -352,7 +351,7 @@
 /* Action Container */
 .action-container {
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 /* Empty States */

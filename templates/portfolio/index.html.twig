@@ -8,10 +8,10 @@
             <div class="portfolio-header">
                 <h1 class="portfolio-title">My Investment Portfolio</h1>
                 <div class="portfolio-actions">
-                    <button class="btn btn-outline btn-icon">
+                    <button class="btn btn-outline">
                         <i data-lucide="filter"></i> Filter
                     </button>
-                    <a href="{{ path('app_portfolio_new') }}" class="btn btn-primary btn-icon">
+                    <a href="{{ path('app_portfolio_new') }}" class="btn btn-primary">
                         <i data-lucide="plus"></i> Add Portfolio
                     </a>
                 </div>
@@ -209,7 +209,7 @@
                                                             <a href="/portfolio/{{ child.id }}/add-asset" class="btn btn-primary btn-sm">
                                                                 <i data-lucide="plus"></i> Add Asset to {{ child.name }}
                                                             </a>
-                                                            <a href="{{ path('app_portfolio_new', {'parent': portfolio.id}) }}" class="btn btn-primary btn-close"><i data-lucide="plus"></i> Add Subportfolio to {{ child.name }}</a>
+                                                            <a href="{{ path('app_portfolio_new', {'parentId': portfolio.id}) }}" class="btn btn-primary btn-close"><i data-lucide="plus"></i> Add Subportfolio to {{ child.name }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -228,7 +228,7 @@
 
                                 <hr>
 
-                                <a href="{{ path('app_portfolio_new', {'parent': portfolio.id}) }}" class="btn btn-primary btn-close"><i data-lucide="plus"></i> Add Subportfolio to {{ portfolio.name }}</a>
+                                <a href="{{ path('app_portfolio_new', {'parentId': portfolio.id}) }}" class="btn btn-primary btn-close"><i data-lucide="plus"></i> Add Subportfolio to {{ portfolio.name }}</a>
 
                             </div>
                         {% endif %}
