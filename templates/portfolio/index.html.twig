@@ -15,8 +15,6 @@
                         <i data-lucide="plus"></i> Add Portfolio
                     </a>
                 </div>
-                <p>Total Value: {{totalValue|number_format(2, ',', ' ') }} €</p>
-                <p>Total Quantity: {{ totalQuantity }}</p>
             </div>
 
             {% if portfolios|length > 0 %}
@@ -218,12 +216,12 @@
                                             {% endfor %}
                                         {% endif %}
 
-{#                                        <div class="bento-item add-item-card">#}
-{#                                            <a href="{{ path('app_portfolio_new', {'parent': portfolio.id}) }}" class="add-link">#}
-{#                                                <i data-lucide="plus-circle"></i>#}
-{#                                                <span>Add Subportfolio</span>#}
-{#                                            </a>#}
-{#                                        </div>#}
+                                        {#                                        <div class="bento-item add-item-card">#}
+                                        {#                                            <a href="{{ path('app_portfolio_new', {'parent': portfolio.id}) }}" class="add-link">#}
+                                        {#                                                <i data-lucide="plus-circle"></i>#}
+                                        {#                                                <span>Add Subportfolio</span>#}
+                                        {#                                            </a>#}
+                                        {#                                        </div>#}
 
                                     </div>
                                 </div>
