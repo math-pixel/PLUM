@@ -13,30 +13,38 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
 class TransactionFixtures extends Fixture implements DependentFixtureInterface
 {
-    public const TRANSACTION_COUNT = 30;
-
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
 
-        for ($i = 0; $i < self::TRANSACTION_COUNT; $i++) {
-            $transaction = new Transaction();
+        // Generate realistic transactions per user and per asset
+        for ($u = 0; $u < UserFixtures::USER_COUNT; $u++) {
+            $user = $this->getReference('user_' . $u, User::class);
 
-            $user = $this->getReference('user_' . mt_rand(0, UserFixtures::USER_COUNT - 1), User::class);
-            $transaction->setUser($user);
+            for ($a = 0; $a < AssetFixtures::ASSET_COUNT; $a++) {
+                $asset = $this->getReference('asset_' . $a, Asset::class);
 
-            $asset = $this->getReference('asset_' . mt_rand(0, AssetFixtures::ASSET_COUNT - 1), Asset::class);
-            $transaction->setAsset($asset);
+                // Each user does between 5 and 15 transactions per asset
+                $txCount = $faker->numberBetween(5, 15);
+                for ($t = 0; $t < $txCount; $t++) {
+                    $transaction = new Transaction();
+                    $transaction->setUser($user);
+                    $transaction->setAsset($asset);
 
-            // Génère une quantité aléatoire pouvant être positive ou négative
-            $quantity = $faker->numberBetween(-100, 100);
-            $transaction->setQuantity($quantity);
+                    // Random quantity: positive (buy) or negative (sell)
+                    $quantity = $faker->numberBetween(1, 100);
+                    if ($faker->boolean(30)) {
+                        $quantity = -$faker->numberBetween(1, min($quantity, 50));
+                    }
+                    $transaction->setQuantity($quantity);
 
-            // Génère un prix d'achat aléatoire (entre 1€ et 500€)
-            $price = $faker->randomFloat(2, 1, 500);
-            $transaction->setPrice($price);
+                    // Random purchase price between 1€ and 500€ with 2 decimals
+                    $price = round($faker->randomFloat(2, 1, 500), 2);
+                    $transaction->setPrice($price);
 
-            $manager->persist($transaction);
+                    $manager->persist($transaction);
+                }
+            }
         }
 
         $manager->flush();

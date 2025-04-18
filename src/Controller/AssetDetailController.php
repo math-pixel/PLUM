@@ -36,6 +36,57 @@ final class AssetDetailController extends AbstractController
             $prices[] = round($priceFloat, 2);
         }
 
+<<<<<<< HEAD
+=======
+        $chart = $chartBuilder->createChart(Chart::TYPE_LINE);
+        $chart->setData([
+            'labels' => $labels,
+            'datasets' => [
+                [
+                    'label' => 'Investissement cumulé',
+                    'data' => $investments,
+                    'backgroundColor' => $colors['fuchsia']['fill'],
+                    'borderColor' => $colors['fuchsia']['stroke'],
+                    'borderWidth' => 2,
+                    'tension' => 0.4,
+                    'fill' => true,
+                ],
+                [
+                    'label' => 'Prix d\'achat',
+                    'data' => $prices,
+                    'yAxisID' => 'y1',
+                    'backgroundColor' => $colors['red']['fill'],
+                    'borderColor' => $colors['red']['stroke'],
+                    'borderWidth' => 2,
+                    'tension' => 0.4,
+                    'fill' => false,
+                ],
+            ],
+        ]);
+
+        $chart->setOptions([
+            'scales' => [
+                'y' => [
+                    'position' => 'left',
+                    'title' => [
+                        'display' => true,
+                        'text' => 'Investissement (€)'
+                    ],
+                ],
+                'y1' => [
+                    'position' => 'right',
+                    'title' => [
+                        'display' => true,
+                        'text' => "Prix d'achat (€)"
+                    ],
+                    'grid' => [
+                        'drawOnChartArea' => false,
+                    ],
+                ],
+            ],
+        ]);
+
+>>>>>>> 8086532 (feat(fixture): ADD real fixtures and henri user)
         return $this->render('asset_detail/index.html.twig', [
             'asset'        => $asset,
             'labels'       => $labels,
