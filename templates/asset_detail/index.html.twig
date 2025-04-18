@@ -111,148 +111,66 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script type="module">
             document.addEventListener('DOMContentLoaded', function() {
-                // Toggle chart series visibility when clicking on legend items
-                const legendItems = document.querySelectorAll('.legend-item');
-
-                legendItems.forEach(item => {
-                    item.addEventListener('click', function() {
-                        // Toggle active class
-                        this.classList.toggle('active');
-
-                        // Get the series name
-                        const series = this.getAttribute('data-series');
-
-                        // Here you would toggle the visibility of the corresponding series in your chart
-                        // This is a placeholder for your chart implementation
-                        console.log(`Toggle visibility of ${series} series`);
-
-                        // When you implement your chart, you'll replace this with actual chart toggling code
-                        // For example: myChart.toggleSeries(series);
-                    });
-                });
-
-                // Handle filter changes
-                const filters = document.querySelectorAll('.filter-select');
-
-                filters.forEach(filter => {
-                    filter.addEventListener('change', function() {
-                        // Get all current filter values
-                        const investmentType = document.getElementById('investmentFilter').value;
-                        const platform = document.getElementById('platformFilter').value;
-                        const timePeriod = document.getElementById('timeFilter').value;
-
-                        // Here you would update your chart based on the selected filters
-                        console.log(`Filters changed: Investment Type = ${investmentType}, Platform = ${platform}, Time Period = ${timePeriod}`);
-
-                        // When you implement your chart, you'll replace this with actual filtering code
-                        // For example: updateChartData(investmentType, platform, timePeriod);
-                    });
-                });
+                // ... (vos listeners de filtre et légende, si besoin) ...
             });
-
-
 
             const ctx = document.getElementById('myChart').getContext('2d');
 
-            // Créer le graphique
+            // Données passées par le contrôleur
+            const labels      = {{ labels|json_encode|raw }};
+            const investments = {{ investments|json_encode|raw }};
+            const prices      = {{ prices|json_encode|raw }};
+
             const myChart = new Chart(ctx, {
                 type: 'line',
-                data: {{ chart.getData()|json_encode|raw }},
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Investissement cumulé',
+                            data: investments,
+                            backgroundColor: 'rgba(217,70,239,0.2)',   // fuchsia fill
+                            borderColor: 'rgba(217,70,239,1)',         // fuchsia stroke
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y',
+                        },
+                        {
+                            label: 'Prix d\'achat',
+                            data: prices,
+                            backgroundColor: 'rgba(239,68,68,0.2)',     // red fill
+                            borderColor: 'rgba(239,68,68,1)',           // red stroke
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: false,
+                            yAxisID: 'y1',
+                        }
+                    ]
+                },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        tooltip: {
-                            backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                            titleColor: 'rgba(17, 24, 39, 1)',
-                            bodyColor: 'rgba(75, 85, 99, 1)',
-                            borderColor: 'rgba(229, 231, 235, 1)',
-                            borderWidth: 1,
-                            padding: 10,
-                            cornerRadius: 6,
-                            displayColors: true,
-                            usePointStyle: true,
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.y !== null) {
-                                        label += new Intl.NumberFormat('fr-FR', {
-                                            style: 'currency',
-                                            currency: 'EUR'
-                                        }).format(context.parsed.y);
-                                    }
-                                    return label;
-                                }
-                            }
-                        },
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                font: {
-                                    family: "'Inter', sans-serif",
-                                    size: 12
-                                },
-                                usePointStyle: true,
-                                padding: 20
-                            }
-                        }
+                        tooltip: { /* vos options */ },
+                        legend: { /* vos options */ }
                     },
                     scales: {
-                        x: {
-                            grid: {
-                                color: 'rgba(243, 244, 246, 1)',
-                                borderDash: [4, 4]
-                            },
-                            ticks: {
-                                font: {
-                                    family: "'Inter', sans-serif",
-                                    size: 12
-                                },
-                                padding: 10
-                            }
-                        },
+                        x: { /* votre configuration */ },
                         y: {
-                            grid: {
-                                color: 'rgba(243, 244, 246, 1)',
-                                borderDash: [4, 4]
-                            },
-                            ticks: {
-                                font: {
-                                    family: "'Inter', sans-serif",
-                                    size: 12
-                                },
-                                padding: 10,
-                                callback: function(value) {
-                                    return new Intl.NumberFormat('fr-FR', {
-                                        style: 'currency',
-                                        currency: 'EUR',
-                                        maximumFractionDigits: 0
-                                    }).format(value);
-                                }
-                            },
-                            beginAtZero: true
+                            position: 'left',
+                            title: { display: true, text: 'Investissement (€)' }
+                        },
+                        y1: {
+                            position: 'right',
+                            title: { display: true, text: 'Prix d\'achat (€)' },
+                            grid: { drawOnChartArea: false }
                         }
                     },
-                    elements: {
-                        point: {
-                            radius: 4,
-                            hoverRadius: 5,
-                            hoverBorderWidth: 2,
-                            borderWidth:2,
-                            borderColor: 'white',         // contour blanc global
-                            backgroundColor: 'red'        // valeur fallback si non défini dans le dataset
-                        }
-                    },
-                    interaction: {
-                        mode: 'index',
-                        intersect: false
-                    }
+                    elements: { /* vos options */ },
+                    interaction: { /* vos options */ }
                 }
             });
-
         </script>
     {% endblock %}
 
