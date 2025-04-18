@@ -117,11 +117,34 @@ final class AssetDetailController extends AbstractController
                 [
                     'label' => 'Prix d\'achat',
                     'data' => $prices,
+                    'yAxisID' => 'y1',
                     'backgroundColor' => $colors['red']['fill'],
                     'borderColor' => $colors['red']['stroke'],
                     'borderWidth' => 2,
                     'tension' => 0.4,
                     'fill' => false,
+                ],
+            ],
+        ]);
+
+        $chart->setOptions([
+            'scales' => [
+                'y' => [
+                    'position' => 'left',
+                    'title' => [
+                        'display' => true,
+                        'text' => 'Investissement (€)'
+                    ],
+                ],
+                'y1' => [
+                    'position' => 'right',
+                    'title' => [
+                        'display' => true,
+                        'text' => "Prix d'achat (€)"
+                    ],
+                    'grid' => [
+                        'drawOnChartArea' => false,
+                    ],
                 ],
             ],
         ]);

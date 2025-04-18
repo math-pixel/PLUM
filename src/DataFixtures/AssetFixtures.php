@@ -6,7 +6,6 @@ namespace App\DataFixtures;
 use App\Entity\Asset;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
 
 class AssetFixtures extends Fixture
 {
@@ -14,11 +13,22 @@ class AssetFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create('fr_FR');
+        $names = [
+            'Apple Inc.',
+            'Microsoft Corp.',
+            'Amazon.com Inc.',
+            'Alphabet Inc.',
+            'Tesla Inc.',
+            'Meta Platforms Inc.',
+            'Netflix Inc.',
+            'NVIDIA Corp.',
+            'Adobe Inc.',
+            'Intel Corp.',
+        ];
 
-        for ($i = 0; $i < self::ASSET_COUNT; $i++) {
+        for ($i = 0; $i < count($names); $i++) {
             $asset = new Asset();
-            $asset->setName($faker->word);
+            $asset->setName($names[$i]);
 
             $manager->persist($asset);
             $this->addReference('asset_' . $i, $asset);
