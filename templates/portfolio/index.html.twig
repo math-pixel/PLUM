@@ -51,7 +51,7 @@
                                     <div class="assets-grid">
                                         {% if portfolio.portfolioAssets|length > 0 %}
                                             {% for portfolioAsset in portfolio.portfolioAssets %}
-                                                <div class="asset-card">
+                                                <div class="asset-card bento-item">
                                                     <h4 class="asset-name">
                                                         {% if portfolioAsset.asset is defined and portfolioAsset.asset %}
                                                             {{ portfolioAsset.asset.name }}
@@ -149,7 +149,7 @@
                                                         <div class="assets-grid">
                                                             {% if child.portfolioAssets|length > 0 %}
                                                                 {% for portfolioAsset in child.portfolioAssets %}
-                                                                    <div class="asset-card">
+                                                                    <div class="asset-card bento-item">
                                                                         <h4 class="asset-name">
                                                                             {% if portfolioAsset.asset is defined and portfolioAsset.asset %}
                                                                                 {{ portfolioAsset.asset.name }}
@@ -191,6 +191,10 @@
                                                                                 {% endif %}
                                                                             </span>
                                                                             </div>
+                                                                            <a href="/asset/{{ portfolioAsset.asset.id }}/chart" class="btn btn-primary btn-sm">
+                                                                                View {{ portfolioAsset.asset.name }}
+                                                                                <i data-lucide="arrow-right"></i>
+                                                                            </a>
                                                                         </div>
                                                                     </div>
                                                                 {% endfor %}
