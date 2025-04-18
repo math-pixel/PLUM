@@ -73,7 +73,6 @@ class Asset
     public function removePortfolioAsset(PortfolioAsset $portfolioAsset): static
     {
         if ($this->portfolioAssets->removeElement($portfolioAsset)) {
-            // set the owning side to null (unless already changed)
             if ($portfolioAsset->getAsset() === $this) {
                 $portfolioAsset->setAsset(null);
             }
