@@ -2,7 +2,13 @@
 
 {% block title %}New Transaction{% endblock %}
 
+{% set page_css = ['formulaire'] %}
+
 {% block body %}
+{#    <a href="{{ path('app_transaction_index') }}">back to list</a>#}
+    <a href="{{ path('app_transaction_index') }}" class="btn btn-outline btn-sm">
+        Back
+    </a>
     <h1>Create New Transaction</h1>
 
     {{ form_start(form) }}
@@ -10,8 +16,10 @@
     {{ form_row(form.price) }}
     {{ form_row(form.asset) }}
     {{ form_rest(form) }}
-    <button class="btn">Save</button>
+    <button class="btn btn-primary btn-sm">
+    Save
+    </button>
     {{ form_end(form) }}
 
-    <a href="{{ path('app_transaction_index') }}">back to list</a>
+
 {% endblock %}

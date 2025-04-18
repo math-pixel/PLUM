@@ -1,0 +1,153 @@
+/* Transaction Form Styles */
+
+:root {
+    /* Purple Color Palette */
+    --purple-50: #f5f3ff;
+    --purple-100: #ede9fe;
+    --purple-200: #ddd6fe;
+    --purple-300: #c4b5fd;
+    --purple-400: #a78bfa;
+    --purple-500: #8b5cf6;
+    --purple-600: #7c3aed;
+    --purple-700: #6d28d9;
+    --purple-800: #5b21b6;
+    --purple-900: #4c1d95;
+
+    /* Neutral Colors */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+}
+
+/* Form Container */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: var(--spacing-lg);
+    background-color: white;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Headings */
+h1 {
+    color: var(--purple-800);
+    margin-bottom: var(--spacing-xl);
+    font-size: 1.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Labels */
+label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    color: var(--gray-700);
+    font-weight: 500;
+}
+
+/* Form Controls */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 1px solid var(--gray-300);
+    border-radius: var(--radius-md);
+    background-color: var(--gray-50);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--purple-400);
+    box-shadow: 0 0 0 3px var(--purple-100);
+}
+
+/*!* Buttons *!*/
+/*.btn {*/
+/*    display: inline-block;*/
+/*    padding: var(--spacing-md) var(--spacing-xl);*/
+/*    background-color: var(--purple-600);*/
+/*    color: white;*/
+/*    border: none;*/
+/*    border-radius: var(--radius-md);*/
+/*    font-weight: 500;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.2s;*/
+/*}*/
+
+/*.btn:hover {*/
+/*    background-color: var(--purple-700);*/
+/*}*/
+
+/*.btn:focus {*/
+/*    outline: none;*/
+/*    box-shadow: 0 0 0 3px var(--purple-200);*/
+/*}*/
+
+/*!* Back Link *!*/
+/*a {*/
+/*    display: inline-block;*/
+/*    margin-top: var(--spacing-lg);*/
+/*    color: var(--purple-600);*/
+/*    text-decoration: none;*/
+/*    font-weight: 500;*/
+/*    transition: color 0.2s;*/
+/*}*/
+
+/*a:hover {*/
+/*    color: var(--purple-800);*/
+/*    text-decoration: underline;*/
+/*}*/
+
+/* Form Row Styling (for Symfony form rows) */
+.form-row {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Error Messages */
+.form-error {
+    color: #e53e3e;
+    font-size: 0.875rem;
+    margin-top: var(--spacing-xs);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    form {
+        padding: var(--spacing-md);
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
