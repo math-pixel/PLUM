@@ -59,19 +59,16 @@
                                                             Asset {{ loop.index }}
                                                         {% endif %}
                                                     </h4>
-{#                                                    <div class="asset-details">#}
-{#                                                        <div class="asset-detail">#}
-{#                                                            <span class="detail-label">Value:</span>#}
-{#                                                            <span class="detail-value">#}
-{#                                                            {% if portfolioAsset.amount is defined %}#}
-{#                                                                €{{ portfolioAsset.amount|number_format(2, '.', ',') }}#}
-{#                                                            {% elseif portfolioAsset.value is defined %}#}
-{#                                                                €{{ portfolioAsset.value|number_format(2, '.', ',') }}#}
-{#                                                            {% else %}#}
-{#                                                                €0.00#}
-{#                                                            {% endif %}#}
-{#                                                        </span>#}
-{#                                                        </div>#}
+                                                    <div class="asset-details">
+                                                        <div class="asset-detail">
+                                                            <span class="detail-label">Value:</span>
+                                                            <span class="detail-value">
+                                                            {% if portfolioAsset.asset.currentValue is defined %}
+                                                                €{{ portfolioAsset.asset.currentValue|number_format(2, '.', ',') }}
+                                                            {% endif %}
+                                                        </span>
+                                                        </div>
+
 {#                                                        <div class="asset-detail">#}
 {#                                                            <span class="detail-label">Quantity:</span>#}
 {#                                                            <span class="detail-value">#}
@@ -92,11 +89,11 @@
 {#                                                            {% endif %}#}
 {#                                                        </span>#}
 {#                                                        </div>#}
-{#                                                        <a href="/asset/{{ portfolioAsset.asset.id }}/chart" class="btn btn-primary btn-sm">#}
-{#                                                            View {{ portfolioAsset.asset.name }}#}
-{#                                                            <i data-lucide="arrow-right"></i>#}
-{#                                                        </a>#}
-{#                                                    </div>#}
+                                                        <a href="/asset/{{ portfolioAsset.asset.id }}/chart" class="btn btn-primary btn-sm">
+                                                            View {{ portfolioAsset.asset.name }}
+                                                            <i data-lucide="arrow-right"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
 
                                             {% endfor %}
@@ -162,10 +159,8 @@
                                                                             <div class="asset-detail">
                                                                                 <span class="detail-label">Value:</span>
                                                                                 <span class="detail-value">
-                                                                                {% if portfolioAsset.amount is defined %}
-                                                                                    €{{ portfolioAsset.amount|number_format(2, '.', ',') }}
-                                                                                {% elseif portfolioAsset.value is defined %}
-                                                                                    €{{ portfolioAsset.value|number_format(2, '.', ',') }}
+                                                                                {% if portfolioAsset.asset.currentValue is defined %}
+                                                                                    €{{ portfolioAsset.asset.currentValue|number_format(2, '.', ',') }}
                                                                                 {% else %}
                                                                                     €0.00
                                                                                 {% endif %}
@@ -181,16 +176,16 @@
 {#                                                                                {% endif %}#}
 {#                                                                            </span>#}
 {#                                                                            </div>#}
-                                                                            <div class="asset-detail">
-                                                                                <span class="detail-label">Purchased:</span>
-                                                                                <span class="detail-value">
-                                                                                {% if portfolioAsset.purchaseDate is defined and portfolioAsset.purchaseDate %}
-                                                                                    {{ portfolioAsset.purchaseDate|date('d M Y') }}
-                                                                                {% else %}
-                                                                                    N/A
-                                                                                {% endif %}
-                                                                            </span>
-                                                                            </div>
+{#                                                                            <div class="asset-detail">#}
+{#                                                                                <span class="detail-label">Purchased:</span>#}
+{#                                                                                <span class="detail-value">#}
+{#                                                                                {% if portfolioAsset.purchaseDate is defined and portfolioAsset.purchaseDate %}#}
+{#                                                                                    {{ portfolioAsset.purchaseDate|date('d M Y') }}#}
+{#                                                                                {% else %}#}
+{#                                                                                    N/A#}
+{#                                                                                {% endif %}#}
+{#                                                                            </span>#}
+{#                                                                            </div>#}
                                                                             <a href="/asset/{{ portfolioAsset.asset.id }}/chart" class="btn btn-primary btn-sm">
                                                                                 View {{ portfolioAsset.asset.name }}
                                                                                 <i data-lucide="arrow-right"></i>
