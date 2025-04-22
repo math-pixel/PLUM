@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Portfolio{% endblock %}
+
+{% set page_css = ['formulaire'] %}
+
+{% block body %}
+    <a href="{{ path('app_transaction_index') }}" class="btn btn-outline btn-sm">
+        Back
+    </a>
+    <h1>Edit Portfolio</h1>
+
+    {{ include('portfolio/_form.html.twig', {'button_label': 'Update'}) }}
+
+{#    <a href="{{ path('app_portfolio_index') }}">back to list</a>#}
+
+    {{ include('portfolio/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% set page_css = ['auth'] %}
+
+{% block title %}Register - InvestFolio{% endblock %}
+
+{% block body %}
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-form-container purple-gradient">
+                    <h1 class="auth-title">Create Account</h1>
+                    <p class="auth-description">Join InvestFolio to start managing your investments</p>
+
+                    {% if form_errors(registrationForm) %}
+                        <div class="alert alert-danger">
+                            {{ form_errors(registrationForm) }}
+                        </div>
+                    {% endif %}
+
+                    {{ form_start(registrationForm, {'attr': {'class': 'auth-form'}}) }}
+                    <div class="form-group">
+                        <label for="{{ registrationForm.email.vars.id }}">Email</label>
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ registrationForm.plainPassword.vars.id }}">Password</label>
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                    {{ form_rest(registrationForm) }}
+                    {{ form_end(registrationForm) }}
+
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="{{ path('app_login') }}" class="auth-link">Login</a></p>
+                    </div>
+                </div>
+
+                <div class="auth-image-container emerald-gradient">
+                    <div class="auth-image-content">
+                        <i data-lucide="line-chart" class="auth-image-icon"></i>
+                        <h2 class="auth-image-title">Start Your Investment Journey</h2>
+                        <p class="auth-image-description">Create a diversified portfolio and track your progress toward financial goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

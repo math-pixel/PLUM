@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Portfolio{% endblock %}
+
+{% set page_css = ['formulaire'] %}
+
+{% block body %}
+
+    <a href="{{ path('app_transaction_index') }}" class="btn btn-outline btn-sm">
+        Back
+    </a>
+
+    <h1>Create new Portfolio</h1>
+
+{#    {{ include('portfolio/_form.html.twig') }}#}
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+{#    {{ form_row(form.price) }}#}
+{#    {{ form_row(form.asset) }}#}
+    <button class="btn btn-primary btn-sm">
+        Save
+    </button>
+    {{ form_rest(form) }}
+
+{#    <a href="{{ path('app_portfolio_index') }}">back to list</a>#}
+{% endblock %}

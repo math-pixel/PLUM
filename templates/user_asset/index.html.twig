@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}UserAsset index{% endblock %}
+
+{% block body %}
+    <h1>UserAsset index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Number</th>
+                <th>Data</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user_asset in user_assets %}
+            <tr>
+                <td>{{ user_asset.id }}</td>
+                <td>{{ user_asset.number }}</td>
+                <td>{{ user_asset.data }}</td>
+                <td>
+                    <a href="{{ path('app_user_asset_show', {'id': user_asset.id}) }}">show</a>
+                    <a href="{{ path('app_user_asset_edit', {'id': user_asset.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_user_asset_new') }}">Create new</a>
+{% endblock %}

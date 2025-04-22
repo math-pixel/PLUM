@@ -1,0 +1,19 @@
+{# templates/portfolio/_add_asset_form.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Add new asset{% endblock %}
+
+{% set page_css = ['formulaire'] %}
+
+{% block body %}
+<form action="{{ path('app_portfolio_add_asset', {'id': portfolio.id}) }}" method="post">
+
+    {{ form_start(form) }}
+    {{ form_row(form.asset) }}
+
+    <button class="btn btn-primary" type="submit">Ajouter asset</button>
+
+    {{ form_end(form) }}
+</form>
+{% endblock %}

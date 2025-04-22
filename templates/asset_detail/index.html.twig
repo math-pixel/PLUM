@@ -1,0 +1,180 @@
+{% extends 'base.html.twig' %}
+
+{#{% block title %}{{ asset.name }} - InvestFolio{% endblock %}#}
+
+{% set page_css = ['asset_detail'] %}
+
+{% block body %}
+    <section class="asset-detail-section">
+        <div class="container">
+            <!-- Asset Header -->
+            <div class="asset-header">
+                <h1 class="asset-title">{{ asset.name }}</h1>
+                {#                {% if asset.description %}#}
+                {#                    <p class="asset-description">{{ asset.description }}</p>#}
+                {#                {% endif %}#}
+            </div>
+
+            <!-- Chart Legend -->
+            {#            <div class="chart-legend">#}
+            {#                <div class="legend-item legend-investment active" data-series="investment">#}
+            {#                    <div class="legend-color color-investment"></div>#}
+            {#                    <span class="legend-label">Investment</span>#}
+            {#                </div>#}
+            {#                <div class="legend-item legend-interest active" data-series="interest">#}
+            {#                    <div class="legend-color color-interest"></div>#}
+            {#                    <span class="legend-label">Interest</span>#}
+            {#                </div>#}
+            {#                <div class="legend-item legend-profit active" data-series="profit">#}
+            {#                    <div class="legend-color color-profit"></div>#}
+            {#                    <span class="legend-label">Profit</span>#}
+            {#                </div>#}
+            {#            </div>#}
+
+            <!-- Chart Container -->
+            <div class="chart-container">
+                <!-- This div will be replaced with your symphony-ux-chartjs implementation -->
+                {#                <div class="chart-placeholder" id="assetChart">#}
+                {#                    Chart will be displayed here#}
+                {#                </div>#}
+                {#                {{ dump(chartData) }}#}
+                <canvas id="myChart"></canvas>
+
+                {#                {{ render_chart(chart) }}#}
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label class="filter-label" for="investmentFilter">Investment Type</label>
+                    <select class="filter-select" id="investmentFilter">
+                        <option value="all">All Types</option>
+                        <option value="stocks">Stocks</option>
+                        <option value="crypto">Cryptocurrency</option>
+                        <option value="bonds">Bonds</option>
+                        <option value="realestate">Real Estate</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label" for="platformFilter">Platform</label>
+                    <select class="filter-select" id="platformFilter">
+                        <option value="all">All Platforms</option>
+                        <option value="binance">Binance</option>
+                        <option value="coinbase">Coinbase</option>
+                        <option value="robinhood">Robinhood</option>
+                        <option value="etoro">eToro</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label" for="timeFilter">Time Period</label>
+                    <select class="filter-select" id="timeFilter">
+                        <option value="1d">1 Day</option>
+                        <option value="1w">1 Week</option>
+                        <option value="1m">1 Month</option>
+                        <option value="3m">3 Months</option>
+                        <option value="1y" selected>1 Year</option>
+                        <option value="all">All Time</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Asset Stats -->
+            <div class="asset-stats">
+                <div class="stat-card purple-gradient">
+                    <div class="stat-title">Current Value</div>
+                                        <div class="stat-value">${{ asset.currentValue|number_format(2) }}</div>
+                </div>
+
+{#                <div class="stat-card blue-gradient">#}
+{#                    <div class="stat-title">Initial Investment</div>#}
+{#                                                            <div class="stat-value">{{ investments|number_format(2) }}%</div>#}
+{#                </div>#}
+
+                <div class="stat-card emerald-gradient">
+                    <div class="stat-title">Total Return</div>
+                                        <div class="stat-value">{{ totalValue|number_format(2) }}€</div>
+                </div>
+
+                <div class="stat-card amber-gradient">
+                    <div class="stat-title">Quantity</div>
+                    <div class="stat-value">{{ totalQuantity|number_format(2) }}</div>
+                    {#                    <div class="stat-value">{{ asset.annualYield|number_format(2) }}%</div>#}
+                </div>
+            </div>
+        </div>
+        <p>Total Quantity: {{ totalQuantity }}</p>
+        <p>Total Value: {{ totalValue|number_format(2, ',', ' ') }} €</p>
+        {{ include('/transaction/_asset_transactions.html.twig') }}
+        <a href="{{ path('app_transaction_new') }}">Ajouter une transaction</a>
+    </section>
+
+    {% block javascripts %}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script type="module">
+            document.addEventListener('DOMContentLoaded', function() {
+                // ... (vos listeners de filtre et légende, si besoin) ...
+            });
+
+            const ctx = document.getElementById('myChart').getContext('2d');
+
+            // Données passées par le contrôleur
+            const labels      = {{ labels|json_encode|raw }};
+            const investments = {{ investments|json_encode|raw }};
+            const prices      = {{ prices|json_encode|raw }};
+
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Investissement cumulé',
+                            data: investments,
+                            backgroundColor: 'rgba(217,70,239,0.2)',   // fuchsia fill
+                            borderColor: 'rgba(217,70,239,1)',         // fuchsia stroke
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true,
+                            yAxisID: 'y',
+                        },
+                        {
+                            label: 'Prix d\'achat',
+                            data: prices,
+                            backgroundColor: 'rgba(239,68,68,0.2)',     // red fill
+                            borderColor: 'rgba(239,68,68,1)',           // red stroke
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: false,
+                            yAxisID: 'y1',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: { /* vos options */ },
+                        legend: { /* vos options */ }
+                    },
+                    scales: {
+                        x: { /* votre configuration */ },
+                        y: {
+                            position: 'left',
+                            title: { display: true, text: 'Investissement (€)' }
+                        },
+                        y1: {
+                            position: 'right',
+                            title: { display: true, text: 'Prix d\'achat (€)' },
+                            grid: { drawOnChartArea: false }
+                        }
+                    },
+                    elements: { /* vos options */ },
+                    interaction: { /* vos options */ }
+                }
+            });
+        </script>
+    {% endblock %}
+
+{% endblock %}

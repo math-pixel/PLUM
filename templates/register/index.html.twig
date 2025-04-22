@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register - InvestFolio{% endblock %}
+
+{% block body %}
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-form-container purple-gradient">
+                    <h1 class="auth-title">Create Account</h1>
+                    <p class="auth-description">Join InvestFolio to start managing your investments</p>
+
+                    <form class="auth-form" action="/register" method="post">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password_confirm">Confirm Password</label>
+                            <input type="password" id="password_confirm" name="password_confirm" required class="form-control">
+                        </div>
+
+                        <div class="form-group form-checkbox">
+                            <input type="checkbox" id="terms" name="terms" required class="form-checkbox-input">
+                            <label for="terms" class="form-checkbox-label">I agree to the <a href="/terms" class="auth-link">Terms of Service</a> and <a href="/privacy" class="auth-link">Privacy Policy</a></label>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+
+                    </form>
+
+                    <div class="auth-footer">
+                        <p>Already have an account? <a href="/login" class="auth-link">Login</a></p>
+                    </div>
+                </div>
+
+                <div class="auth-image-container emerald-gradient">
+                    <div class="auth-image-content">
+                        <i data-lucide="line-chart" class="auth-image-icon"></i>
+                        <h2 class="auth-image-title">Start Your Investment Journey</h2>
+                        <p class="auth-image-description">Create a diversified portfolio and track your progress toward financial goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit UserAsset{% endblock %}
+
+{% block body %}
+    <h1>Edit UserAsset</h1>
+
+    {{ include('user_asset/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_user_asset_index') }}">back to list</a>
+
+    {{ include('user_asset/_delete_form.html.twig') }}
+{% endblock %}

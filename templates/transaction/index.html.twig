@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Transactions{% endblock %}
+
+{% set page_css = ['transaction'] %}
+
+{% block body %}
+    <h1>Transactions</h1>
+
+    <a href="{{ path('app_transaction_new') }}" class="btn btn-primary btn-sm">
+        Create new transaction <i data-lucide="plus"></i>
+    </a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Asset</th>
+            <th>Quantity</th>
+            <th>Purchase Price (€)</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for transaction in transactions %}
+            <tr>
+                <td>{{ transaction.id }}</td>
+                <td>{{ transaction.user.email }}</td>
+                <td>{{ transaction.asset.name }}</td>
+                <td>{{ transaction.quantity }}</td>
+                <td>{{ (transaction.price / 100) | number_format(2, '.', ',') }}</td>
+                <td>
+                    <a href="{{ path('app_transaction_show', {id: transaction.id}) }}">show</a>
+                    <a href="{{ path('app_transaction_edit', {id: transaction.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">No transactions found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{#    <a href="{{ path('app_transaction_new') }}">Create new transaction</a>#}
+
+{% endblock %}
