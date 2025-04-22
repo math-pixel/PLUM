@@ -10,37 +10,37 @@
             <!-- Asset Header -->
             <div class="asset-header">
                 <h1 class="asset-title">{{ asset.name }}</h1>
-{#                {% if asset.description %}#}
-{#                    <p class="asset-description">{{ asset.description }}</p>#}
-{#                {% endif %}#}
+                {#                {% if asset.description %}#}
+                {#                    <p class="asset-description">{{ asset.description }}</p>#}
+                {#                {% endif %}#}
             </div>
 
             <!-- Chart Legend -->
-{#            <div class="chart-legend">#}
-{#                <div class="legend-item legend-investment active" data-series="investment">#}
-{#                    <div class="legend-color color-investment"></div>#}
-{#                    <span class="legend-label">Investment</span>#}
-{#                </div>#}
-{#                <div class="legend-item legend-interest active" data-series="interest">#}
-{#                    <div class="legend-color color-interest"></div>#}
-{#                    <span class="legend-label">Interest</span>#}
-{#                </div>#}
-{#                <div class="legend-item legend-profit active" data-series="profit">#}
-{#                    <div class="legend-color color-profit"></div>#}
-{#                    <span class="legend-label">Profit</span>#}
-{#                </div>#}
-{#            </div>#}
+            {#            <div class="chart-legend">#}
+            {#                <div class="legend-item legend-investment active" data-series="investment">#}
+            {#                    <div class="legend-color color-investment"></div>#}
+            {#                    <span class="legend-label">Investment</span>#}
+            {#                </div>#}
+            {#                <div class="legend-item legend-interest active" data-series="interest">#}
+            {#                    <div class="legend-color color-interest"></div>#}
+            {#                    <span class="legend-label">Interest</span>#}
+            {#                </div>#}
+            {#                <div class="legend-item legend-profit active" data-series="profit">#}
+            {#                    <div class="legend-color color-profit"></div>#}
+            {#                    <span class="legend-label">Profit</span>#}
+            {#                </div>#}
+            {#            </div>#}
 
             <!-- Chart Container -->
             <div class="chart-container">
                 <!-- This div will be replaced with your symphony-ux-chartjs implementation -->
-{#                <div class="chart-placeholder" id="assetChart">#}
-{#                    Chart will be displayed here#}
-{#                </div>#}
-{#                {{ dump(chartData) }}#}
+                {#                <div class="chart-placeholder" id="assetChart">#}
+                {#                    Chart will be displayed here#}
+                {#                </div>#}
+                {#                {{ dump(chartData) }}#}
                 <canvas id="myChart"></canvas>
 
-{#                {{ render_chart(chart) }}#}
+                {#                {{ render_chart(chart) }}#}
             </div>
 
             <!-- Filter Controls -->
@@ -84,27 +84,26 @@
             <div class="asset-stats">
                 <div class="stat-card purple-gradient">
                     <div class="stat-title">Current Value</div>
-{#                    <div class="stat-value">${{ asset.currentValue|number_format(2) }}</div>#}
+                                        <div class="stat-value">${{ asset.currentValue|number_format(2) }}</div>
                 </div>
 
-                <div class="stat-card blue-gradient">
-                    <div class="stat-title">Initial Investment</div>
-{#                    <div class="stat-value">${{ asset.initialInvestment|number_format(2) }}</div>#}
-                </div>
+{#                <div class="stat-card blue-gradient">#}
+{#                    <div class="stat-title">Initial Investment</div>#}
+{#                                                            <div class="stat-value">{{ investments|number_format(2) }}%</div>#}
+{#                </div>#}
 
                 <div class="stat-card emerald-gradient">
                     <div class="stat-title">Total Return</div>
-{#                    <div class="stat-value">{{ asset.returnPercentage|number_format(2) }}%</div>#}
+                                        <div class="stat-value">{{ totalValue|number_format(2) }}€</div>
                 </div>
 
                 <div class="stat-card amber-gradient">
-                    <div class="stat-title">Annual Yield</div>
-{#                    <div class="stat-value">{{ asset.annualYield|number_format(2) }}%</div>#}
+                    <div class="stat-title">Quantity</div>
+                    <div class="stat-value">{{ totalQuantity|number_format(2) }}</div>
+                    {#                    <div class="stat-value">{{ asset.annualYield|number_format(2) }}%</div>#}
                 </div>
             </div>
         </div>
-        <p>Total Quantity: {{ totalQuantity }}</p>
-        <p>Total Value: {{ totalValue|number_format(2, ',', ' ') }} €</p>
         {{ include('/transaction/_asset_transactions.html.twig') }}
         <a href="{{ path('app_transaction_new') }}">Ajouter une transaction</a>
     </section>

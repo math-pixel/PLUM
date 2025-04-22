@@ -25,10 +25,10 @@
                                 <div class="portfolio-card-header">
                                     <div class="portfolio-info">
                                         <h2 class="portfolio-name">{{ portfolio.name }}</h2>
-                                        <div class="portfolio-value">
-                                            <span class="value-label">Total Value</span>
-                                            <span class="value-amount">€0.00</span>
-                                        </div>
+{#                                        <div class="portfolio-value">#}
+{#                                            <span class="value-label">Total Value</span>#}
+{#                                            <span class="value-amount">€0.00</span>#}
+{#                                        </div>#}
                                     </div>
                                     <div class="portfolio-actions">
                                         <a href="{{ path('app_portfolio_edit', {'id': portfolio.id}) }}" class="btn-icon">
@@ -59,44 +59,44 @@
                                                             Asset {{ loop.index }}
                                                         {% endif %}
                                                     </h4>
-                                                    <div class="asset-details">
-                                                        <div class="asset-detail">
-                                                            <span class="detail-label">Value:</span>
-                                                            <span class="detail-value">
-                                                            {% if portfolioAsset.amount is defined %}
-                                                                €{{ portfolioAsset.amount|number_format(2, '.', ',') }}
-                                                            {% elseif portfolioAsset.value is defined %}
-                                                                €{{ portfolioAsset.value|number_format(2, '.', ',') }}
-                                                            {% else %}
-                                                                €0.00
-                                                            {% endif %}
-                                                        </span>
-                                                        </div>
-                                                        <div class="asset-detail">
-                                                            <span class="detail-label">Quantity:</span>
-                                                            <span class="detail-value">
-                                                            {% if portfolioAsset.quantity is defined %}
-                                                                {{ portfolioAsset.quantity }}
-                                                            {% else %}
-                                                                N/A
-                                                            {% endif %}
-                                                        </span>
-                                                        </div>
-                                                        <div class="asset-detail">
-                                                            <span class="detail-label">Purchased:</span>
-                                                            <span class="detail-value">
-                                                            {% if portfolioAsset.purchaseDate is defined and portfolioAsset.purchaseDate %}
-                                                                {{ portfolioAsset.purchaseDate|date('d M Y') }}
-                                                            {% else %}
-                                                                N/A
-                                                            {% endif %}
-                                                        </span>
-                                                        </div>
-                                                        <a href="/asset/{{ portfolioAsset.asset.id }}/chart" class="btn btn-primary btn-sm">
-                                                            View {{ portfolioAsset.asset.name }}
-                                                            <i data-lucide="arrow-right"></i>
-                                                        </a>
-                                                    </div>
+{#                                                    <div class="asset-details">#}
+{#                                                        <div class="asset-detail">#}
+{#                                                            <span class="detail-label">Value:</span>#}
+{#                                                            <span class="detail-value">#}
+{#                                                            {% if portfolioAsset.amount is defined %}#}
+{#                                                                €{{ portfolioAsset.amount|number_format(2, '.', ',') }}#}
+{#                                                            {% elseif portfolioAsset.value is defined %}#}
+{#                                                                €{{ portfolioAsset.value|number_format(2, '.', ',') }}#}
+{#                                                            {% else %}#}
+{#                                                                €0.00#}
+{#                                                            {% endif %}#}
+{#                                                        </span>#}
+{#                                                        </div>#}
+{#                                                        <div class="asset-detail">#}
+{#                                                            <span class="detail-label">Quantity:</span>#}
+{#                                                            <span class="detail-value">#}
+{#                                                            {% if portfolioAsset.quantity is defined %}#}
+{#                                                                {{ portfolioAsset.quantity }}#}
+{#                                                            {% else %}#}
+{#                                                                N/A#}
+{#                                                            {% endif %}#}
+{#                                                        </span>#}
+{#                                                        </div>#}
+{#                                                        <div class="asset-detail">#}
+{#                                                            <span class="detail-label">Purchased:</span>#}
+{#                                                            <span class="detail-value">#}
+{#                                                            {% if portfolioAsset.purchaseDate is defined and portfolioAsset.purchaseDate %}#}
+{#                                                                {{ portfolioAsset.purchaseDate|date('d M Y') }}#}
+{#                                                            {% else %}#}
+{#                                                                N/A#}
+{#                                                            {% endif %}#}
+{#                                                        </span>#}
+{#                                                        </div>#}
+{#                                                        <a href="/asset/{{ portfolioAsset.asset.id }}/chart" class="btn btn-primary btn-sm">#}
+{#                                                            View {{ portfolioAsset.asset.name }}#}
+{#                                                            <i data-lucide="arrow-right"></i>#}
+{#                                                        </a>#}
+{#                                                    </div>#}
                                                 </div>
 
                                             {% endfor %}
@@ -129,10 +129,10 @@
                                                         <div class="portfolio-info">
                                                             <h4 class="portfolio-name">{{ child.name }}</h4>
                                                             <hr>
-                                                            <div class="portfolio-value">
-                                                                <span class="value-label">Total Value</span>
-                                                                <span class="value-amount">€0.00</span>
-                                                            </div>
+{#                                                            <div class="portfolio-value">#}
+{#                                                                <span class="value-label">Total Value</span>#}
+{#                                                                <span class="value-amount">€0.00</span>#}
+{#                                                            </div>#}
                                                         </div>
                                                         <div class="portfolio-actions">
                                                             <a href="{{ path('app_portfolio_edit', {'id': child.id}) }}" class="btn-icon">
@@ -171,16 +171,16 @@
                                                                                 {% endif %}
                                                                             </span>
                                                                             </div>
-                                                                            <div class="asset-detail">
-                                                                                <span class="detail-label">Quantity:</span>
-                                                                                <span class="detail-value">
-                                                                                {% if portfolioAsset.quantity is defined %}
-                                                                                    {{ portfolioAsset.quantity }}
-                                                                                {% else %}
-                                                                                    N/A
-                                                                                {% endif %}
-                                                                            </span>
-                                                                            </div>
+{#                                                                            <div class="asset-detail">#}
+{#                                                                                <span class="detail-label">Quantity:</span>#}
+{#                                                                                <span class="detail-value">#}
+{#                                                                                {% if portfolioAsset.quantity is defined %}#}
+{#                                                                                    {{ portfolioAsset.quantity }}#}
+{#                                                                                {% else %}#}
+{#                                                                                    N/A#}
+{#                                                                                {% endif %}#}
+{#                                                                            </span>#}
+{#                                                                            </div>#}
                                                                             <div class="asset-detail">
                                                                                 <span class="detail-label">Purchased:</span>
                                                                                 <span class="detail-value">
