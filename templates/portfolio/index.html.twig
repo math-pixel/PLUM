@@ -7,6 +7,8 @@
         <div class="container">
             <div class="portfolio-header">
                 <h1 class="portfolio-title">My Investment Portfolio</h1>
+                <p>Total investissement : {{ totalValue|number_format(2) }}€</p>
+                <p>Quantité asset : {{ totalQuantity }}</p>
                 <div class="portfolio-actions">
                     <button class="btn btn-outline">
                         <i data-lucide="filter"></i> Filter
