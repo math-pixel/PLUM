@@ -43,6 +43,7 @@ final class AssetDetailController extends AbstractController
 
         $totalQuantity = $assetService->getTotalQuantity($asset, $this->getUser());
 
+
         $totalValue = $assetService->getCurrentValue($asset, $this->getUser());
         return $this->render('asset_detail/index.html.twig', [
             'asset' => $asset,

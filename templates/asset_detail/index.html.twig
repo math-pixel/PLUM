@@ -104,6 +104,8 @@
                 </div>
             </div>
         </div>
+        <p>Total Quantity: {{ totalQuantity }}</p>
+        <p>Total Value: {{ totalValue|number_format(2, ',', ' ') }} €</p>
         {{ include('/transaction/_asset_transactions.html.twig') }}
         <a href="{{ path('app_transaction_new') }}">Ajouter une transaction</a>
     </section>
