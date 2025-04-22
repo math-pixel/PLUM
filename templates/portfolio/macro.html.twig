@@ -1,0 +1,139 @@
+{#
+Cette macro affiche un portfolio et ses assets
+
+Paramètres attendus:
+- portfolio: L'objet portfolio à afficher
+  - portfolio.id: ID unique du portfolio
+  - portfolio.name: Nom du portfolio
+  - portfolio.portfolioAssets: Collection de PortfolioAsset du portfolio
+  - portfolio.children: Collection des portfolios enfants (si hiérarchie)
+- forms: Les formulaires associés (si nécessaire)
+#}
+{% macro renderPortfolio(portfolio, forms) %}
+    <div class="portfolio-box">
+        {# En-tête du portfolio #}
+        <div class="portfolio-box-header">
+            <h2 class="portfolio-box-title">{{ portfolio.name }}</h2>
+            <div class="portfolio-box-actions">
+                <a href="{{ path('app_portfolio_edit', {'id': portfolio.id}) }}" class="btn btn-outline btn-sm btn-icon">
+                    <i data-lucide="edit"></i>
+                </a>
+                {% if portfolio.children|length > 0 %}
+                    <button type="button" class="btn btn-outline btn-sm btn-icon toggle-children" data-portfolio-id="{{ portfolio.id }}">
+                        <i data-lucide="chevron-down"></i>
+                    </button>
+                {% endif %}
+            </div>
+        </div>
+
+        {# Contenu du portfolio #}
+        <div class="portfolio-box-content">
+            {# Résumé du portfolio #}
+            <div class="portfolio-summary">
+                <div class="summary-item purple-gradient">
+                    <h3 class="summary-title">Total Value</h3>
+                    <p class="summary-value">
+                        {# Commentaire: Remplacez ce commentaire par le calcul de la valeur totale #}
+                        {{ 0|format_currency('EUR') }}
+                    </p>
+                </div>
+            </div>
+
+            {# Assets du portfolio #}
+            {% if portfolio.portfolioAssets|length > 0 %}
+                <div class="assets-grid">
+                    {% for portfolioAsset in portfolio.portfolioAssets %}
+                        <div class="asset-card {{ cycle(['purple-gradient', 'blue-gradient', 'emerald-gradient', 'amber-gradient', 'rose-gradient'], loop.index0) }}">
+                            <div class="asset-card-header">
+                                <div class="asset-icon {{ cycle(['purple', 'blue', 'emerald', 'amber', 'rose'], loop.index0) }}">
+                                    <i data-lucide="pie-chart"></i>
+                                </div>
+                                <h3 class="asset-title">
+                                    {% if portfolioAsset.asset is defined and portfolioAsset.asset %}
+                                        {{ portfolioAsset.asset.name }}
+                                    {% else %}
+                                        {# Nom de l'asset non disponible #}
+                                        Asset {{ loop.index }}
+                                    {% endif %}
+                                </h3>
+                            </div>
+
+                            {% if portfolioAsset.asset is defined and portfolioAsset.asset and portfolioAsset.asset.description is defined and portfolioAsset.asset.description %}
+                                <p class="asset-description">{{ portfolioAsset.asset.description }}</p>
+                            {% endif %}
+
+                            <div class="asset-details">
+                                {# Valeur de l'asset #}
+                                <div class="asset-detail-row">
+                                    <span class="detail-label">Value:</span>
+                                    <span class="detail-value">
+                                        {% if portfolioAsset.amount is defined %}
+                                            {{ portfolioAsset.amount|format_currency('EUR') }}
+                                        {% elseif portfolioAsset.value is defined %}
+                                            {{ portfolioAsset.value|format_currency('EUR') }}
+                                        {% else %}
+                                            {{ 0|format_currency('EUR') }}
+                                        {% endif %}
+                                    </span>
+                                </div>
+
+                                {# Quantité - Optionnel #}
+                                <div class="asset-detail-row">
+                                    <span class="detail-label">Quantity:</span>
+                                    <span class="detail-value">
+                                        {% if portfolioAsset.quantity is defined %}
+                                            {{ portfolioAsset.quantity }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </span>
+                                </div>
+
+                                {# Date d'achat - Optionnel #}
+                                <div class="asset-detail-row">
+                                    <span class="detail-label">Purchased:</span>
+                                    <span class="detail-value">
+                                        {% if portfolioAsset.purchaseDate is defined and portfolioAsset.purchaseDate %}
+                                            {{ portfolioAsset.purchaseDate|date('d M Y') }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="asset-actions">
+                                <a href="{{ path('app_asset_show', {'id': portfolioAsset.id}) }}" class="btn btn-sm btn-light">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                {# Message si aucun asset n'est présent #}
+                <div class="empty-assets">
+                    <div class="empty-icon">
+                        <i data-lucide="package"></i>
+                    </div>
+                    <p>No assets in this portfolio yet.</p>
+                    <a href="{{ path('app_asset_new', {'portfolio': portfolio.id}) }}" class="btn btn-primary btn-sm">
+                        <i data-lucide="plus"></i> Add Asset
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+
+        {# Portfolios enfants (si présents) #}
+        {% if portfolio.children|length > 0 %}
+            <div class="portfolio-children" id="children-{{ portfolio.id }}" style="display: block;">
+                <h3 class="children-title">Sub-portfolios</h3>
+                <div class="children-grid">
+                    {% for child in portfolio.children %}
+                        {{ _self.renderPortfolio(child, forms) }}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endmacro %}

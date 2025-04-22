@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% import 'portfolio/_portfolio_macros.html.twig' as pf %}
-
 {% set page_css = ['portfolio'] %}
 
 {% block body %}
@@ -9,12 +7,14 @@
         <div class="container">
             <div class="portfolio-header">
                 <h1 class="portfolio-title">My Investment Portfolio</h1>
+                <p>Total investissement : {{ totalValue|number_format(2) }}€</p>
+                <p>Quantité asset : {{ totalQuantity }}</p>
                 <div class="portfolio-actions">
-                    <button class="btn btn-outline btn-icon">
+                    <button class="btn btn-outline">
                         <i data-lucide="filter"></i> Filter
                     </button>
-                    <a href="{{ path('app_portfolio_new') }}" class="btn btn-primary btn-icon">
-                        <i data-lucide="plus"></i> Add Investment
+                    <a href="{{ path('app_portfolio_new') }}" class="btn btn-primary">
+                        <i data-lucide="plus"></i> Add Portfolio
                     </a>
                 </div>
                 <p>Total Value: {{totalValue|number_format(2, ',', ' ') }} €</p>
@@ -22,205 +22,285 @@
             </div>
 
             {% if portfolios|length > 0 %}
-                {% for portfolio in portfolios %}
-                    {% if portfolio.parent is null %}
-                        {{ pf.renderPortfolio(portfolio, forms) }}
-                    {% endif %}
-                {% endfor %}
+                <div class="bento-grid">
+                    {% for portfolio in portfolios %}
+                        {% if portfolio.parent is null %}
+                            <div class="portfolio-card bento-item bento-large " id="portfolio-{{ portfolio.id }}">
+                                <div class="portfolio-card-header">
+                                    <div class="portfolio-info">
+                                        <h2 class="portfolio-name">{{ portfolio.name }}</h2>
+{#                                        <div class="portfolio-value">#}
+{#                                            <span class="value-label">Total Value</span>#}
+{#                                            <span class="value-amount">€0.00</span>#}
+{#                                        </div>#}
+                                    </div>
+                                    <div class="portfolio-actions">
+                                        <a href="{{ path('app_portfolio_edit', {'id': portfolio.id}) }}" class="btn-icon">
+                                            <i data-lucide="edit-3"></i>
+                                        </a>
+                                        <button type="button" class="btn-icon toggle-section" data-target="assets-{{ portfolio.id }}">
+                                            <i data-lucide="chevron-down"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- Assets Section -->
+                                <div class="section-content hidden" id="assets-{{ portfolio.id }}">
+                                    <h3 class="section-title">Assets</h3>
+
+                                    <hr>
+
+                                    <div class="assets-grid">
+                                        {% if portfolio.portfolioAssets|length > 0 %}
+                                            {% for portfolioAsset in portfolio.portfolioAssets %}
+                                                <div class="asset-card bento-item">
+                                                    <h4 class="asset-name">
+                                                        {% if portfolioAsset.asset is defined and portfolioAsset.asset %}
+                                                            {{ portfolioAsset.asset.name }}
+                                                        {% else %}
+                                                            Asset {{ loop.index }}
+                                                        {% endif %}
+                                                    </h4>
+                                                    <div class="asset-details">
+                                                        <div class="asset-detail">
+                                                            <span class="detail-label">Value:</span>
+                                                            <span class="detail-value">
+                                                            {% if portfolioAsset.asset.currentValue is defined %}
+                                                                €{{ portfolioAsset.asset.currentValue|number_format(2, '.', ',') }}
+                                                            {% endif %}
+                                                        </span>
+                                                        </div>
+
+{#                                                        <div class="asset-detail">#}
+{#                                                            <span class="detail-label">Quantity:</span>#}
+{#                                                            <span class="detail-value">#}
+{#                                                            {% if portfolioAsset.quantity is defined %}#}
+{#                                                                {{ portfolioAsset.quantity }}#}
+{#                                                            {% else %}#}
+{#                                                                N/A#}
+{#                                                            {% endif %}#}
+{#                                                        </span>#}
+{#                                                        </div>#}
+{#                                                        <div class="asset-detail">#}
+{#                                                            <span class="detail-label">Purchased:</span>#}
+{#                                                            <span class="detail-value">#}
+{#                                                            {% if portfolioAsset.purchaseDate is defined and portfolioAsset.purchaseDate %}#}
+{#                                                                {{ portfolioAsset.purchaseDate|date('d M Y') }}#}
+{#                                                            {% else %}#}
+{#                                                                N/A#}
+{#                                                            {% endif %}#}
+{#                                                        </span>#}
+{#                                                        </div>#}
+                                                        <a href="/asset/{{ portfolioAsset.asset.id }}/chart" class="btn btn-primary btn-sm">
+                                                            View {{ portfolioAsset.asset.name }}
+                                                            <i data-lucide="arrow-right"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+
+                                            {% endfor %}
+                                        {% else %}
+                                            <div class="empty-message">
+                                                <p>No assets in this portfolio yet.</p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="action-container">
+                                        <a href="/portfolio/{{ portfolio.id }}/add-asset" class="btn btn-primary btn-sm">
+                                            <i data-lucide="plus"></i> Add Asset to {{ portfolio.name }}
+                                        </a>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- Subportfolios Section -->
+                                <div class="section-content">
+                                    <h3 class="section-title">Subportfolios</h3>
+                                    <hr>
+
+                                    <div class="subportfolios-grid">
+                                        {% if portfolio.children|length > 0 %}
+                                            {% for child in portfolio.children %}
+                                                <div class="bento-item subportfolio-card" id="subportfolio-{{ child.id }}">
+                                                    <div class="portfolio-card-header">
+                                                        <div class="portfolio-info">
+                                                            <h4 class="portfolio-name">{{ child.name }}</h4>
+                                                            <hr>
+{#                                                            <div class="portfolio-value">#}
+{#                                                                <span class="value-label">Total Value</span>#}
+{#                                                                <span class="value-amount">€0.00</span>#}
+{#                                                            </div>#}
+                                                        </div>
+                                                        <div class="portfolio-actions">
+                                                            <a href="{{ path('app_portfolio_edit', {'id': child.id}) }}" class="btn-icon">
+                                                                <i data-lucide="edit-3"></i>
+                                                            </a>
+                                                            <button type="button" class="btn-icon toggle-section" data-target="assets-{{ child.id }}">
+                                                                <i data-lucide="chevron-down"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Subportfolio Assets (hidden by default) -->
+                                                    <div class="section-content hidden" id="assets-{{ child.id }}">
+                                                        <div class="assets-grid">
+                                                            {% if child.portfolioAssets|length > 0 %}
+                                                                {% for portfolioAsset in child.portfolioAssets %}
+                                                                    <div class="asset-card bento-item">
+                                                                        <h4 class="asset-name">
+                                                                            {% if portfolioAsset.asset is defined and portfolioAsset.asset %}
+                                                                                {{ portfolioAsset.asset.name }}
+                                                                                <hr>
+                                                                            {% else %}
+                                                                                Asset {{ loop.index }}
+                                                                            {% endif %}
+                                                                        </h4>
+                                                                        <div class="asset-details">
+                                                                            <div class="asset-detail">
+                                                                                <span class="detail-label">Value:</span>
+                                                                                <span class="detail-value">
+                                                                                {% if portfolioAsset.asset.currentValue is defined %}
+                                                                                    €{{ portfolioAsset.asset.currentValue|number_format(2, '.', ',') }}
+                                                                                {% else %}
+                                                                                    €0.00
+                                                                                {% endif %}
+                                                                            </span>
+                                                                            </div>
+{#                                                                            <div class="asset-detail">#}
+{#                                                                                <span class="detail-label">Quantity:</span>#}
+{#                                                                                <span class="detail-value">#}
+{#                                                                                {% if portfolioAsset.quantity is defined %}#}
+{#                                                                                    {{ portfolioAsset.quantity }}#}
+{#                                                                                {% else %}#}
+{#                                                                                    N/A#}
+{#                                                                                {% endif %}#}
+{#                                                                            </span>#}
+{#                                                                            </div>#}
+{#                                                                            <div class="asset-detail">#}
+{#                                                                                <span class="detail-label">Purchased:</span>#}
+{#                                                                                <span class="detail-value">#}
+{#                                                                                {% if portfolioAsset.purchaseDate is defined and portfolioAsset.purchaseDate %}#}
+{#                                                                                    {{ portfolioAsset.purchaseDate|date('d M Y') }}#}
+{#                                                                                {% else %}#}
+{#                                                                                    N/A#}
+{#                                                                                {% endif %}#}
+{#                                                                            </span>#}
+{#                                                                            </div>#}
+                                                                            <a href="/asset/{{ portfolioAsset.asset.id }}/chart" class="btn btn-primary btn-sm">
+                                                                                View {{ portfolioAsset.asset.name }}
+                                                                                <i data-lucide="arrow-right"></i>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            {% else %}
+                                                                <div class="empty-message">
+                                                                    <p>No assets in this portfolio yet.</p>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+
+                                                        <div class="action-container">
+                                                            <a href="/portfolio/{{ child.id }}/add-asset" class="btn btn-primary btn-sm">
+                                                                <i data-lucide="plus"></i> Add Asset to {{ child.name }}
+                                                            </a>
+                                                            <a href="{{ path('app_portfolio_new', {'parentId': portfolio.id}) }}" class="btn btn-primary btn-close"><i data-lucide="plus"></i> Add Subportfolio to {{ child.name }}</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        {#                                        <div class="bento-item add-item-card">#}
+                                        {#                                            <a href="{{ path('app_portfolio_new', {'parent': portfolio.id}) }}" class="add-link">#}
+                                        {#                                                <i data-lucide="plus-circle"></i>#}
+                                        {#                                                <span>Add Subportfolio</span>#}
+                                        {#                                            </a>#}
+                                        {#                                        </div>#}
+
+                                    </div>
+                                </div>
+
+                                <hr>
+
+                                <a href="{{ path('app_portfolio_new', {'parentId': portfolio.id}) }}" class="btn btn-primary btn-close"><i data-lucide="plus"></i> Add Subportfolio to {{ portfolio.name }}</a>
+
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
             {% else %}
-                <p>No portfolios found. <a href="{{ path('app_portfolio_new') }}">Create one now</a>.</p>
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i data-lucide="folder"></i>
+                    </div>
+                    <h2 class="empty-state-title">No portfolios found</h2>
+                    <p class="empty-state-description">Create your first portfolio to start tracking your investments.</p>
+                    <a href="{{ path('app_portfolio_new') }}" class="btn btn-primary btn-lg">
+                        <i data-lucide="plus"></i> Create Portfolio
+                    </a>
+                </div>
             {% endif %}
         </div>
     </section>
 {% endblock %}
 
-{#                <div class="portfolio-summary">#}
-{#                    <div class="summary-item purple-gradient">#}
-{#                        <h3 class="summary-title">Total Value</h3>#}
-{#                        <p class="summary-value">$124,500.00</p>#}
-{#                        <p class="summary-change positive">+2.4% <i data-lucide="trending-up"></i></p>#}
-{#                    </div>#}
-{#                    <div class="summary-item blue-gradient">#}
-{#                        <h3 class="summary-title">Monthly Return</h3>#}
-{#                        <p class="summary-value">$1,245.00</p>#}
-{#                        <p class="summary-change positive">+1.8% <i data-lucide="trending-up"></i></p>#}
-{#                    </div>#}
-{#                    <div class="summary-item amber-gradient">#}
-{#                        <h3 class="summary-title">Annual Return</h3>#}
-{#                        <p class="summary-value">$12,450.00</p>#}
-{#                        <p class="summary-change positive">+10.5% <i data-lucide="trending-up"></i></p>#}
-{#                    </div>#}
-{#                </div>#}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Toggle section visibility
+            const toggleButtons = document.querySelectorAll(".toggle-section");
 
-{#                <div class="bento-grid">#}
-{#                    <!-- Stocks -->#}
-{#                    <div class="bento-item bento-large purple-gradient">#}
-{#                        <div class="bento-icon-wrapper purple">#}
-{#                            <i data-lucide="bar-chart-2"></i>#}
-{#                        </div>#}
-{#                        <h3 class="bento-title">Stocks</h3>#}
-{#                        <p class="bento-description">Your stock investments across different sectors and markets.</p>#}
-{#                        <div class="bento-content">#}
-{#                            <div class="investment-list">#}
-{#                                <div class="investment-item">#}
-{#                                    <div class="investment-info">#}
-{#                                        <h4>AAPL</h4>#}
-{#                                        <p>Apple Inc.</p>#}
-{#                                    </div>#}
-{#                                    <div class="investment-value">#}
-{#                                        <p class="value">$25,000</p>#}
-{#                                        <p class="change positive">+3.2%</p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                                <div class="investment-item">#}
-{#                                    <div class="investment-info">#}
-{#                                        <h4>MSFT</h4>#}
-{#                                        <p>Microsoft Corp.</p>#}
-{#                                    </div>#}
-{#                                    <div class="investment-value">#}
-{#                                        <p class="value">$18,500</p>#}
-{#                                        <p class="change positive">+1.8%</p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                                <div class="investment-item">#}
-{#                                    <div class="investment-info">#}
-{#                                        <h4>AMZN</h4>#}
-{#                                        <p>Amazon.com Inc.</p>#}
-{#                                    </div>#}
-{#                                    <div class="investment-value">#}
-{#                                        <p class="value">$15,000</p>#}
-{#                                        <p class="change negative">-0.5%</p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="bento-arrow">#}
-{#                            <i data-lucide="arrow-right"></i>#}
-{#                        </div>#}
-{#                    </div>#}
+            toggleButtons.forEach(button => {
+                button.addEventListener("click", function() {
+                    const targetId = this.getAttribute("data-target");
+                    const targetSection = document.getElementById(targetId);
 
-{#                    <!-- ETFs -->#}
-{#                    <div class="bento-item blue-gradient">#}
-{#                        <div class="bento-icon-wrapper blue">#}
-{#                            <i data-lucide="layers"></i>#}
-{#                        </div>#}
-{#                        <h3 class="bento-title">ETFs</h3>#}
-{#                        <p class="bento-description">Your exchange-traded fund investments.</p>#}
-{#                        <div class="bento-content">#}
-{#                            <div class="investment-list">#}
-{#                                <div class="investment-item">#}
-{#                                    <div class="investment-info">#}
-{#                                        <h4>VOO</h4>#}
-{#                                        <p>Vanguard S&P 500</p>#}
-{#                                    </div>#}
-{#                                    <div class="investment-value">#}
-{#                                        <p class="value">$20,000</p>#}
-{#                                        <p class="change positive">+2.1%</p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                                <div class="investment-item">#}
-{#                                    <div class="investment-info">#}
-{#                                        <h4>QQQ</h4>#}
-{#                                        <p>Invesco NASDAQ 100</p>#}
-{#                                    </div>#}
-{#                                    <div class="investment-value">#}
-{#                                        <p class="value">$15,000</p>#}
-{#                                        <p class="change positive">+2.5%</p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="bento-arrow">#}
-{#                            <i data-lucide="arrow-right"></i>#}
-{#                        </div>#}
-{#                    </div>#}
+                    if (targetSection) {
+                        // Toggle visibility with animation
+                        if (targetSection.classList.contains("hidden")) {
+                            // Show the section
+                            targetSection.classList.remove("hidden");
+                            targetSection.style.maxHeight = "0";
+                            targetSection.style.opacity = "0";
 
-{#                    <!-- Bonds -->#}
-{#                    <div class="bento-item amber-gradient">#}
-{#                        <div class="bento-icon-wrapper amber">#}
-{#                            <i data-lucide="landmark"></i>#}
-{#                        </div>#}
-{#                        <h3 class="bento-title">Bonds</h3>#}
-{#                        <p class="bento-description">Your bond investments and fixed income securities.</p>#}
-{#                        <div class="bento-content">#}
-{#                            <div class="investment-list">#}
-{#                                <div class="investment-item">#}
-{#                                    <div class="investment-info">#}
-{#                                        <h4>BND</h4>#}
-{#                                        <p>Vanguard Total Bond</p>#}
-{#                                    </div>#}
-{#                                    <div class="investment-value">#}
-{#                                        <p class="value">$10,000</p>#}
-{#                                        <p class="change positive">+0.5%</p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="bento-arrow">#}
-{#                            <i data-lucide="arrow-right"></i>#}
-{#                        </div>#}
-{#                    </div>#}
+                            // Trigger animation
+                            setTimeout(() => {
+                                targetSection.style.transition = "max-height 0.5s ease, opacity 0.3s ease";
+                                targetSection.style.maxHeight = targetSection.scrollHeight + "px";
+                                targetSection.style.opacity = "1";
+                            }, 10);
 
-{#                    <!-- Real Estate -->#}
-{#                    <div class="bento-item emerald-gradient">#}
-{#                        <div class="bento-icon-wrapper emerald">#}
-{#                            <i data-lucide="home"></i>#}
-{#                        </div>#}
-{#                        <h3 class="bento-title">Real Estate</h3>#}
-{#                        <p class="bento-description">Your real estate investment trusts (REITs).</p>#}
-{#                        <div class="bento-content">#}
-{#                            <div class="investment-list">#}
-{#                                <div class="investment-item">#}
-{#                                    <div class="investment-info">#}
-{#                                        <h4>VNQ</h4>#}
-{#                                        <p>Vanguard Real Estate</p>#}
-{#                                    </div>#}
-{#                                    <div class="investment-value">#}
-{#                                        <p class="value">$12,000</p>#}
-{#                                        <p class="change positive">+1.2%</p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="bento-arrow">#}
-{#                            <i data-lucide="arrow-right"></i>#}
-{#                        </div>#}
-{#                    </div>#}
+                            // Add active class to button
+                            this.classList.add("active");
+                        } else {
+                            // Hide the section
+                            targetSection.style.transition = "max-height 0.5s ease, opacity 0.3s ease";
+                            targetSection.style.maxHeight = "0";
+                            targetSection.style.opacity = "0";
 
-{#                    <!-- Crypto -->#}
-{#                    <div class="bento-item bento-large rose-gradient">#}
-{#                        <div class="bento-icon-wrapper rose">#}
-{#                            <i data-lucide="bitcoin"></i>#}
-{#                        </div>#}
-{#                        <h3 class="bento-title">Cryptocurrency</h3>#}
-{#                        <p class="bento-description">Your cryptocurrency investments.</p>#}
-{#                        <div class="bento-content">#}
-{#                            <div class="investment-list">#}
-{#                                <div class="investment-item">#}
-{#                                    <div class="investment-info">#}
-{#                                        <h4>BTC</h4>#}
-{#                                        <p>Bitcoin</p>#}
-{#                                    </div>#}
-{#                                    <div class="investment-value">#}
-{#                                        <p class="value">$5,000</p>#}
-{#                                        <p class="change positive">+4.5%</p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                                <div class="investment-item">#}
-{#                                    <div class="investment-info">#}
-{#                                        <h4>ETH</h4>#}
-{#                                        <p>Ethereum</p>#}
-{#                                    </div>#}
-{#                                    <div class="investment-value">#}
-{#                                        <p class="value">$4,000</p>#}
-{#                                        <p class="change negative">-1.2%</p>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <div class="bento-arrow">#}
-{#                            <i data-lucide="arrow-right"></i>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
+                            // After animation completes, add hidden class
+                            setTimeout(() => {
+                                targetSection.classList.add("hidden");
+                                targetSection.style.transition = "";
+                            }, 500);
+
+                            // Remove active class from button
+                            this.classList.remove("active");
+                        }
+                    }
+                });
+            });
+
+            // Initialize Lucide icons if not already done
+            if (typeof lucide !== "undefined" && typeof lucide.createIcons === "function") {
+                lucide.createIcons();
+            }
+        });
+    </script>
+{% endblock %}

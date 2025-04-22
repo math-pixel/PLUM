@@ -2,8 +2,14 @@
 
 {% block title %}Transactions{% endblock %}
 
+{% set page_css = ['transaction'] %}
+
 {% block body %}
     <h1>Transactions</h1>
+
+    <a href="{{ path('app_transaction_new') }}" class="btn btn-primary btn-sm">
+        Create new transaction <i data-lucide="plus"></i>
+    </a>
 
     <table>
         <thead>
@@ -37,5 +43,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_transaction_new') }}">Create new transaction</a>
+{#    <a href="{{ path('app_transaction_new') }}">Create new transaction</a>#}
+
 {% endblock %}
